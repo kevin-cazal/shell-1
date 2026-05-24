@@ -1,0 +1,8 @@
+node_modules/
+dist/
+submodules/v86-runner/node_modules/
+.env
+*.img
+*.raw
+*.v86b
+*.v86state

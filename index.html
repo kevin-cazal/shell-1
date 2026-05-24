@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discover Linux — Shell 101</title>
+    <link rel="stylesheet" href="/integrations/subject.css" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <style>
+      .pick-steps {
+        margin: 1.25rem 0 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+      }
+      .pick-steps li {
+        margin: 0;
+        font-size: 1.05rem;
+        color: #ddd;
+      }
+      .pick-steps .pick-btn {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body class="shell-1-layout">
+    <script src="coi-serviceworker.js"></script>
+    <header class="toolbar">
+      <h1 id="page-title">Discover Linux</h1>
+      <span id="status" class="status">En attente du fichier de l'atelier</span>
+      <div id="menu-root" class="menu-root"></div>
+    </header>
+    <input
+      id="state-input"
+      type="file"
+      accept=".v86state,application/octet-stream"
+      hidden
+    />
+    <div id="pick-overlay" class="load-overlay" aria-live="polite">
+      <p class="pick-lead">Pour commencer l'atelier</p>
+      <ol class="pick-steps">
+        <li>
+          <a
+            id="official-bundle-download"
+            class="pick-download-link"
+            href="#"
+            rel="noopener noreferrer"
+            >Télécharger le fichier de l'atelier</a
+          >
+        </li>
+        <li>
+          <label class="pick-btn">
+            Ouvrir le fichier de l'atelier
+            <input
+              id="disk-input"
+              type="file"
+              accept=".v86b,.img,.raw,application/octet-stream"
+            />
+          </label>
+        </li>
+      </ol>
+      <p class="pick-hint">
+        L'atelier ne se charge pas tout seul à l'ouverture de cette page.
+      </p>
+      <p id="pick-error" class="pick-error" hidden></p>
+    </div>
+    <div id="load-overlay" class="load-overlay" hidden aria-live="polite">
+      <p id="load-message">Chargement…</p>
+      <progress id="load-progress" max="100" value="0"></progress>
+    </div>
+    <div id="workbench" class="workbench">
+      <aside id="subject-panel" class="subject-panel" aria-label="Énoncé">
+        <div id="subject-content" class="subject-content"></div>
+      </aside>
+      <main id="terminal-wrap" class="terminal-wrap" hidden>
+        <div id="terminal" class="terminal-host"></div>
+      </main>
+    </div>
+    <script type="module" src="/integrations/main.js"></script>
+  </body>
+</html>
