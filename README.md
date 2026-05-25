@@ -60,9 +60,20 @@ Official bundle: [vm-image-discover-linux-1 releases](https://github.com/kevin-c
 
 ## Play online (GitHub Pages)
 
-https://kevin-cazal.github.io/shell-1/
+After enabling **GitHub Pages** (Actions source) on `main`, the app is published at:
 
-Download the official `.v86b` from releases, then open it in the atelier UI.
+**https://kevin-cazal.github.io/shell-1/**
+
+1. Use **Download official bundle (.v86b)** on the home screen (from [vm-image releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest)).
+2. Choose the downloaded file with **Choose disk or bundle…**.
+
+## Deploy (GitHub Pages)
+
+Pushes to `main` run `.github/workflows/pages.yml` (Vite build + deploy). Set repository **Pages → Build and deployment → GitHub Actions**.
+
+## Deploy under a path prefix
+
+`npm run build` emits relative asset URLs (`base: ./`) so you can serve `dist/` behind nginx at e.g. `/games/shell-1/`. See `submodules/v86-runner` for `VITE_BASE`.
 
 ## Submodule layout
 

@@ -1,5 +1,6 @@
 /** Discover Linux (shell-1) product entry: subject pane, then generic v86 runner. */
 import { initOfficialBundleDownloadLink } from "./plugins/bundleRelease.js";
+import { initScrollFocus } from "./plugins/scrollFocus.js";
 import {
   initSubjectPanel,
   initSubjectPanelVisibility,
@@ -8,6 +9,7 @@ import "@runner/app.js";
 
 initSubjectPanel();
 initSubjectPanelVisibility();
+initScrollFocus();
 initOfficialBundleDownloadLink();
 initFrenchAtelierPickStatus();
 
