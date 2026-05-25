@@ -1,9 +1,13 @@
 /** Discover Linux (shell-1) product entry: subject pane, then generic v86 runner. */
 import { initOfficialBundleDownloadLink } from "./plugins/bundleRelease.js";
-import { initSubjectPanel } from "./plugins/subjectPanel.js";
+import {
+  initSubjectPanel,
+  initSubjectPanelVisibility,
+} from "./plugins/subjectPanel.js";
 import "@runner/app.js";
 
 initSubjectPanel();
+initSubjectPanelVisibility();
 initOfficialBundleDownloadLink();
 initFrenchAtelierPickStatus();
 

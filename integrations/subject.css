@@ -11,10 +11,18 @@
 .workbench {
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(360px, 1.1fr);
+  grid-template-columns: 1fr;
   gap: 0;
   min-height: 0;
   overflow: hidden;
+}
+
+.workbench.vm-ready {
+  grid-template-columns: minmax(280px, 1fr) minmax(360px, 1.1fr);
+}
+
+.subject-panel[hidden] {
+  display: none;
 }
 
 .subject-panel {
@@ -92,7 +100,7 @@
 }
 
 @media (max-width: 900px) {
-  .workbench {
+  .workbench.vm-ready {
     grid-template-columns: 1fr;
     grid-template-rows: minmax(200px, 40vh) 1fr;
   }

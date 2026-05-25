@@ -43,6 +43,38 @@ function fixImageSources(container) {
   });
 }
 
+/** Show subject pane only after the guest VM is ready; hide on pick screen / reset. */
+export function initSubjectPanelVisibility() {
+  const panel = document.getElementById("subject-panel");
+  const workbench = document.getElementById("workbench");
+  const pickOverlay = document.getElementById("pick-overlay");
+  if (!panel) return;
+
+  const hide = () => {
+    panel.hidden = true;
+    workbench?.classList.remove("vm-ready");
+  };
+
+  const show = () => {
+    if (pickOverlay && !pickOverlay.hidden) return;
+    panel.hidden = false;
+    workbench?.classList.add("vm-ready");
+  };
+
+  hide();
+
+  window.addEventListener("vm-guest-ready", show);
+
+  if (pickOverlay) {
+    new MutationObserver(() => {
+      if (!pickOverlay.hidden) hide();
+    }).observe(pickOverlay, {
+      attributes: true,
+      attributeFilter: ["hidden"],
+    });
+  }
+}
+
 export function initSubjectPanel() {
   const root = document.getElementById("subject-content");
   if (!root) return;
