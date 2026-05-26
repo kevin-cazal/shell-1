@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from typing import Any, Callable
 
 ValidatorFn = Callable[[str, dict[str, Any]], bool]
@@ -25,10 +24,3 @@ def check(name: str, submission: str, context: dict[str, Any]) -> bool:
     return fn(submission.strip(), context)
 
 
-def _delivery_101(submission: str, context: dict[str, Any]) -> bool:
-    """Accept hidden livrable path flag; file check on /mnt/host is future work."""
-    pattern = r"^shell1\{\.delivery_101\.tar\}$"
-    return bool(re.match(pattern, submission, re.IGNORECASE))
-
-
-register("delivery_101", _delivery_101)

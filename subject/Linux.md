@@ -20,10 +20,18 @@ Le shell exécutera le programme et affichera sa "sortie" dans le terminal.
 La "sortie" est l'information affichée par le programme lors de son exécution. Ici `uname` affiche des informations sur le système d'exploitation, comme le nom du noyau, la version, l'architecture, etc.
 
 #### Exercice :
-Décrivez ce que fait la commande `cal` :
+
+Utilisez la commande `cal` dans le terminal, puis répondez à la question à choix multiples.
+
+**Que fait la commande `cal` ?**
+
+- **A** — Lance une calculatrice
+- **B** — Affiche un calendrier
+- **C** — Permet de calibrer le système
+- **D** — Permet d'appeler (*call*) une autre commande
 
 <div class="hint">
-Indice: Tapez simplement la commande `cal` dans le terminal et appuyez sur Entrée. Ensuite, décrivez ce que vous voyez.
+Indice: Tapez simplement la commande `cal` dans le terminal et appuyez sur Entrée. Observez ce qui s'affiche.
 </div>
 
 <div hidden class="solution"></div>
@@ -302,7 +310,15 @@ cat <fichier1> <fichier2>
 ```
 
 #### Exercice :
-Utilisez cat pour afficher le contenu de `secret1.txt`. De quoi parle ce fichier ?
+
+Utilisez `cat` pour afficher le contenu de `.secret1.txt`, puis répondez à la question à choix multiples.
+
+**Que recommande `.secret1.txt` pour compléter les commandes au clavier ?**
+
+- **A** — Utiliser uniquement la souris
+- **B** — Appuyer sur Tab (autocomplétion)
+- **C** — Redémarrer le shell
+- **D** — Utiliser `chmod` sur les fichiers secrets
 
 <div class="hint">
 Indice: Lisez bien le contenu de ce fichier si vous voulez une astuce sympa sur l’utilisation du terminal.
@@ -416,6 +432,13 @@ Si vous avez un doute vous pouvez toujours vous référer aux exercices précéd
 Revenez dans votre répertoire personnel et créez une archive du répertoire `101` et de tout son contenu, puis nommez-la `delivery_101.tar`.
 Pour finir créez une **copie** (l'archive originale doit donc être préservée) de cette archive dans le répertoire `/mnt/host` en faisant en sorte le fichier copié soit caché.
 
+**Quel nom doit avoir la copie cachée dans `/mnt/host` ?**
+
+- **A** — `delivery_101.tar`
+- **B** — `.delivery_101.tar`
+- **C** — `.101.tar`
+- **D** — `host_delivery.tar`
+
 <div hidden class="solution"></div>
 
 <div class="hint">
@@ -484,15 +507,58 @@ Dans les exercices, vous rencontrerez des fichiers CSV contenant divers types de
 
 ### grep
 
-grep - imprimer les lignes qui correspondent à des motifs
+`grep` imprime les lignes qui correspondent à un motif dans un fichier.
 
+#### grep — vol AA7566
 
-Exercice:
- - Isolez la ligne contenant les informations sur le numéro de vol "AA7566" dans le fichier `flights.csv` et enregistrez-la dans un fichier nommé `flight_AA7566_info.txt`.
- - Quel est le numéro du vol qui **est arrivé** à 21h42 dans le fichier `flights.csv` ? (écrivez la réponse dans le fichier `answers.txt`)
- - Quel est le numéro de vol de celui opéré par "Air France" partant de l'aéroport Charles de Gaulle (CDG) et arrivant à l'aéroport du Caire (CAI) dans le fichier `flights.csv` ? (écrivez la réponse dans le fichier `answers.txt`)
+Isolez la ligne contenant le numéro de vol **AA7566** dans `flights.csv` et enregistrez-la dans un fichier nommé `flight_AA7566_info.txt`.
 
- Indice: Vous pouvez utiliser la redirection pour enregistrer la sortie d'une commande dans un fichier.
+<div class="hint">
+Indice: Vous pouvez utiliser la redirection pour enregistrer la sortie d'une commande dans un fichier.
+</div>
+
+**Quel fichier enregistre la ligne du vol AA7566 ?**
+
+- **A** — `answers.txt`
+- **B** — `flight_AA7566_info.txt`
+- **C** — `flights.csv`
+- **D** — `aa7566.csv`
+
+<div hidden class="solution"></div>
+
+#### grep — arrivée 21h42
+
+Quel est le numéro du vol qui **est arrivé** à 21h42 dans `flights.csv` ? (écrivez aussi la réponse dans `answers.txt`)
+
+<div class="hint">
+Indice: Cherchez l'heure d'arrivée correspondant à 21h42 (par ex. `9:42 PM` dans le CSV).
+</div>
+
+**Quel vol arrive à 21h42 ?**
+
+- **A** — AF3301
+- **B** — SQ6943
+- **C** — AA7566
+- **D** — AF8882
+
+<div hidden class="solution"></div>
+
+#### grep — Air France CDG–CAI
+
+Quel est le numéro de vol opéré par **Air France** de CDG vers CAI dans `flights.csv` ? (écrivez aussi la réponse dans `answers.txt`)
+
+<div class="hint">
+Indice: Filtrez sur la compagnie, l'aéroport de départ et d'arrivée. Mettez des guillemets autour de « Air France » si besoin.
+</div>
+
+**Quel est ce vol ?**
+
+- **A** — SQ6943
+- **B** — AF3301
+- **C** — AA7566
+- **D** — UA1234
+
+<div hidden class="solution"></div>
 
 ### wc
 wc - imprimer le nombre de nouvelles lignes, de mots et d'octets pour chaque fichier

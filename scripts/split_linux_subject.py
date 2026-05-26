@@ -188,12 +188,30 @@ SECTIONS: list[tuple] = [
         "### grep",
     ),
     (
-        "shell_102/grep",
+        "shell_102/grep_aa7566",
         "shell_102",
-        "Shell 102 — grep",
-        15,
+        "Shell 102 — grep (vol AA7566)",
+        5,
         ["shell_102", "grep"],
         "### grep",
+        "#### grep — arrivée 21h42",
+    ),
+    (
+        "shell_102/grep_arrival_942",
+        "shell_102",
+        "Shell 102 — grep (arrivée 21h42)",
+        5,
+        ["shell_102", "grep"],
+        "#### grep — arrivée 21h42",
+        "#### grep — Air France CDG–CAI",
+    ),
+    (
+        "shell_102/grep_af_cdg_cai",
+        "shell_102",
+        "Shell 102 — grep (Air France CDG–CAI)",
+        5,
+        ["shell_102", "grep"],
+        "#### grep — Air France CDG–CAI",
         "### wc",
     ),
     (
@@ -347,6 +365,9 @@ def needs_quote(s: str) -> bool:
     return bool(re.search(r'[:#\[\]{}&*!|>\'"%@`]', s)) or s.strip() != s
 
 
+SHELL_101_NAMES: list[str] = [name for folder, _cat, name, *_ in SECTIONS if folder.startswith("shell_101/")]
+
+
 def write_challenge_yml(
     path: Path,
     name: str,
@@ -355,6 +376,7 @@ def write_challenge_yml(
     value: int,
     tags: list[str],
     files: list[str],
+    requirement_names: list[str] | None = None,
 ) -> None:
     lines = [
         "name: " + (f'"{name}"' if needs_quote(name) else name),
@@ -369,9 +391,13 @@ def write_challenge_yml(
             f"value: {value}",
             "type: standard",
             "state: visible",
-            "tags:",
         ]
     )
+    if requirement_names:
+        lines.append("requirements:")
+        for req in requirement_names:
+            lines.append(f'  - "{req}"')
+    lines.append("tags:")
     for tag in tags:
         lines.append(f"  - {tag}")
     if files:
@@ -411,6 +437,7 @@ def main() -> None:
     raw = SUBJECT_MD.read_text(encoding="utf-8")
     lines = raw.splitlines(keepends=True)
 
+    prev_name: str | None = None
     for folder, category, name, value, tags, start, end in SECTIONS:
         chunk_lines = extract_section(lines, start, end)
         chunk = "".join(chunk_lines)
@@ -424,6 +451,15 @@ def main() -> None:
         file_list.extend(copy_data_archives(out_dir, folder))
         file_list = sorted(set(file_list))
 
+        if folder.startswith("shell_102/"):
+            reqs = list(SHELL_101_NAMES)
+            if folder != "shell_102/00_intro" and prev_name:
+                reqs.append(prev_name)
+        elif prev_name:
+            reqs = [prev_name]
+        else:
+            reqs = None
+
         write_challenge_yml(
             out_dir / "challenge.yml",
             name,
@@ -432,7 +468,9 @@ def main() -> None:
             value,
             tags,
             file_list,
+            requirement_names=reqs,
         )
+        prev_name = name
         print(f"  {folder} ({len(description)} chars, {len(file_list)} files)")
 
     count = len(list(CHALLENGES.rglob("challenge.yml")))

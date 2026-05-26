@@ -32,7 +32,7 @@ Quelques informations avant de commencer :
 
 1. Les défis sont regroupés en **Shell 101** (fichiers, commandes de base) et **Shell 102** (pipes, texte, find/grep).
 2. Chaque étape a un **drapeau** à soumettre dans CTFd pour marquer la progression.
-3. Les drapeaux sont au format `shell1{reponse}` (minuscules ; les espaces sont autorisés dans les accolades).
+3. Les drapeaux sont au format `shell1{reponse}` (minuscules ; les espaces sont autorisés dans les accolades). Certaines étapes sont des **QCM** : soumettez `shell1{A}` à `shell1{D}` selon la lettre choisie.
 4. Travaillez dans le terminal de la VM ; certains livrables vont dans `/mnt/host` ou `answers.txt` comme indiqué dans l'énoncé.
 
 Pour valider cette introduction Shell 101, soumettez : `shell1{pret a commencer}`.
@@ -46,7 +46,7 @@ Quelques informations avant de commencer :
 
 1. Les défis sont regroupés en **Shell 101** (fichiers, commandes de base) et **Shell 102** (pipes, texte, find/grep).
 2. Chaque étape a un **drapeau** à soumettre dans CTFd pour marquer la progression.
-3. Les drapeaux sont au format `shell1{reponse}` (minuscules ; les espaces sont autorisés dans les accolades).
+3. Les drapeaux sont au format `shell1{reponse}` (minuscules ; les espaces sont autorisés dans les accolades). Certaines étapes sont des **QCM** : soumettez `shell1{A}` à `shell1{D}` selon la lettre choisie.
 4. Travaillez dans le terminal de la VM ; ajoutez vos réponses dans `answers.txt` ou les fichiers demandés.
 
 Pour valider cette introduction Shell 102, soumettez : `shell1{shell 102 start}`.
@@ -60,18 +60,20 @@ FLAG_FOOTER = """\
 **Drapeau :** format `shell1{reponse}`. Dérivez la réponse de l'exercice ci-dessus (commande, nombre, nom de fichier, etc.).
 """
 
+MCQ_FOOTER = """\
+
+---
+
+**Drapeau :** soumettez `shell1{X}` où *X* est la lettre de la bonne réponse (**A**, **B**, **C** ou **D**).
+"""
+
 
 def flag(inner: str) -> str:
     return f"shell1{{{inner.lower()}}}"
 
 
-REGEX_CAL = (
-    r"^shell1\{[^}]*(calendrier|calendar|calendrier mensuel|monthly calendar|mois)[^}]*\}$"
-)
-REGEX_CAT = (
-    r"^shell1\{[^}]*(autocompletion|autocomplétion|autocomplete|tab|completion|less)[^}]*\}$"
-)
-REGEX_GREP = r"^shell1\{[^}]*af3301[^}]*(sq6943|af8882)[^}]*\}$"
+def mcq_flag(letter: str) -> str:
+    return flag(letter.upper())
 
 
 def write_flag_files(private: Path, spec: dict[str, Any]) -> str:
@@ -334,18 +336,12 @@ def build_specs(home: dict, d102: dict, delivery: dict) -> dict[str, dict]:
             "writeup": "Soumettez le drapeau d'accueil après lecture de l'introduction.",
         },
         "shell_101/a_execution_commandes": {
-            "flag_def": {
-                "type": "regex",
-                "content": REGEX_CAL,
-                "data": "case_insensitive",
-            },
-            "flag": flag("calendrier"),
-            "hint_extra": "Plusieurs formulations sont acceptées tant qu'elles décrivent un calendrier (format `shell1{…}`).",
+            "flag": mcq_flag("B"),
+            "mcq": True,
             "writeup": """\
-1. Tapez `cal` puis Entrée.
-2. Observez un calendrier du mois courant dans le terminal.
-3. Drapeau regex : variantes autour de *calendrier* / *calendar* dans `shell1{…}`.
-4. Exemples valides : `shell1{calendrier}`, `shell1{affiche un calendrier mensuel}`, `shell1{calendar}`.""",
+1. Tapez `cal` puis Entrée — un calendrier du mois courant s'affiche.
+2. QCM : **B** — Affiche un calendrier.
+3. Drapeau : `shell1{B}`.""",
         },
         "shell_101/b_arguments_commande": {
             "flag": flag("cal -y"),
@@ -393,14 +389,12 @@ def build_specs(home: dict, d102: dict, delivery: dict) -> dict[str, dict]:
             "writeup": "Déplacez les memos dans memos/, renommez qrcode1→wikipedia_linux et qrcode2→ubuntu dans links/, rendez les fichiers cachés visibles (mv ou mv depuis .secret*).",
         },
         "shell_101/e01_cat": {
-            "flag_def": {
-                "type": "regex",
-                "content": REGEX_CAT,
-                "data": "case_insensitive",
-            },
-            "flag": flag("autocompletion"),
-            "hint_extra": "Le drapeau mentionne l'autocomplétion (Tab) ou l'éditeur `less` décrit dans le fichier.",
-            "writeup": "`.secret1.txt` parle de **Tab** / **autocomplétion** ou de `less`. Regex accepte ces mots-clés dans `shell1{…}`.",
+            "flag": mcq_flag("B"),
+            "mcq": True,
+            "writeup": """\
+1. `cat .secret1.txt` — le fichier décrit l'autocomplétion avec **Tab**.
+2. QCM : **B** — Appuyer sur Tab (autocomplétion).
+3. Drapeau : `shell1{B}`.""",
         },
         "shell_101/e02_micro": {
             "flag": flag("convaincre un chat que je suis le chef"),
@@ -415,12 +409,13 @@ def build_specs(home: dict, d102: dict, delivery: dict) -> dict[str, dict]:
             "writeup": "Lisez `tar -cf` et `tar -czf` ; pas de livrable unique — drapeau de validation de lecture.",
         },
         "shell_101/livrable_1": {
-            "flag_def": {"type": "custom", "validator": "delivery_101"},
-            "flag": flag(".delivery_101.tar"),
+            "flag": mcq_flag("B"),
+            "mcq": True,
             "writeup": """\
 1. `cd ~ && tar -cf delivery_101.tar 101`
 2. Copie cachée : `cp delivery_101.tar /mnt/host/.delivery_101.tar`
-3. Drapeau : `shell1{.delivery_101.tar}` (validé par le plugin custom).""",
+3. QCM : **B** — `.delivery_101.tar`
+4. Drapeau : `shell1{B}`.""",
         },
         "shell_102/00_intro": {
             "flag": flag("shell 102 start"),
@@ -439,19 +434,29 @@ def build_specs(home: dict, d102: dict, delivery: dict) -> dict[str, dict]:
             "flag": flag("csv ok"),
             "writeup": "Comprenez le format CSV (colonnes séparées par des virgules, ligne d'en-tête).",
         },
-        "shell_102/grep": {
-            "flag_def": {
-                "type": "regex",
-                "content": REGEX_GREP,
-                "data": "case_insensitive",
-            },
-            "flag": flag(f"{d102['af_cdg_cai']} {d102['arrival_942_flight']}"),
-            "hint_extra": "Le drapeau contient AF3301 et le vol arrivé à 21h42 (SQ6943 ou AF8882).",
+        "shell_102/grep_aa7566": {
+            "flag": mcq_flag("B"),
+            "mcq": True,
+            "writeup": """\
+1. `grep AA7566 flights.csv > flight_AA7566_info.txt` (ou redirection équivalente).
+2. QCM : **B** — `flight_AA7566_info.txt`.
+3. Drapeau : `shell1{B}`.""",
+        },
+        "shell_102/grep_arrival_942": {
+            "flag": mcq_flag("B"),
+            "mcq": True,
             "writeup": f"""\
-1. `grep AA7566 flights.csv` → flight_AA7566_info.txt.
-2. Arrivée 21h42 = `9:42 PM` → **{d102['arrival_942_flight']}** ou **{d102.get('arrival_942_alt')}**.
-3. Air France CDG→CAI → **{d102['af_cdg_cai']}**.
-4. Regex : `shell1{{af3301 … sq6943|af8882 …}}`.""",
+1. Arrivée 21h42 = `9:42 PM` dans flights.csv → **{d102['arrival_942_flight']}**.
+2. QCM : **B** — SQ6943.
+3. Drapeau : `shell1{{B}}`.""",
+        },
+        "shell_102/grep_af_cdg_cai": {
+            "flag": mcq_flag("B"),
+            "mcq": True,
+            "writeup": f"""\
+1. Air France CDG→CAI → **{d102['af_cdg_cai']}**.
+2. QCM : **B** — AF3301.
+3. Drapeau : `shell1{{B}}`.""",
         },
         "shell_102/wc": {
             "flag": flag(f"{d102['flight_count']} {d102['air_france_count']} {d102['wonderland_words']}"),
@@ -553,7 +558,7 @@ def main() -> None:
             description = INTRO_102 + body
         else:
             extra = spec.get("hint_extra", "")
-            footer = FLAG_FOOTER
+            footer = MCQ_FOOTER if spec.get("mcq") else FLAG_FOOTER
             if extra:
                 footer = f"\n\n*{extra}*\n" + footer
             description = body + footer

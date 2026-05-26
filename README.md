@@ -116,6 +116,8 @@ python3 scripts/generate_flags_and_writeups.py
 cd challenges && export GPG_PASSPHRASE='…' && ./encrypt.sh
 ```
 
+Several challenges use **multiple-choice** flags (`shell1{A}`–`shell1{D}`); hands-on steps stay in the challenge text. See [`challenges/README.md`](challenges/README.md).
+
 ## Follow-ups
 
 - Automated grading of livrables under `/mnt/host` — see [`IDEA.md`](IDEA.md)
