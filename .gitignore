@@ -6,3 +6,6 @@ submodules/v86-runner/node_modules/
 *.raw
 *.v86b
 *.v86state
+.gen_work/
+scripts/__pycache__/
+**/__pycache__/

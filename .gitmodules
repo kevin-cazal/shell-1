@@ -7,3 +7,15 @@
 [submodule "submodules/v86-runner"]
 	path = submodules/v86-runner
 	url = https://github.com/kevin-cazal/v86-runner.git
+[submodule "challenges"]
+	path = challenges
+	url = https://github.com/kevin-cazal/shell-1-challenges.git
+[submodule "integrations/ctfd_shell1_flags"]
+	path = integrations/ctfd_shell1_flags
+	url = https://github.com/kevin-cazal/ctfd-shell1-flags.git
+[submodule "submodules/ctfd"]
+	path = submodules/ctfd
+	url = https://github.com/kevin-cazal/shell-1-ctfd.git
+[submodule "submodules/deploy_challenges"]
+	path = submodules/deploy_challenges
+	url = https://github.com/kevin-cazal/deploy_challenges.git

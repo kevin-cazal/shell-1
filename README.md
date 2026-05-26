@@ -82,7 +82,40 @@ Pushes to `main` run `.github/workflows/pages.yml` (Vite build + deploy). Set re
 | `submodules/alpine-make-vm-image` | Image builder |
 | `submodules/vm-image` | [vm-image-discover-linux-1](https://github.com/kevin-cazal/vm-image-discover-linux-1) |
 | `submodules/v86-runner` | Browser runner |
+| `challenges` | [shell-1-challenges](https://github.com/kevin-cazal/shell-1-challenges) |
+| `integrations/ctfd_shell1_flags` | [ctfd-shell1-flags](https://github.com/kevin-cazal/ctfd-shell1-flags) |
+| `submodules/ctfd` | [shell-1-ctfd](https://github.com/kevin-cazal/shell-1-ctfd) |
+| `submodules/deploy_challenges` | [deploy_challenges](https://github.com/kevin-cazal/deploy_challenges) |
+
+## CTFd (local scoring)
+
+```sh
+cd submodules/ctfd
+docker compose --profile shell-1 up -d
+# http://localhost:9042/ctfd/default/  registration code: shell-1-2026
+```
+
+Deploy challenges (flags are GPG-encrypted in the challenges submodule):
+
+```sh
+export GPG_PASSPHRASE='TESTING42'   # workshop local secret; use your own in production
+export CTFD_TOKEN='…'              # PRESET_ADMIN_TOKEN in submodules/ctfd/docker-compose.yml
+
+python3 submodules/deploy_challenges/deploy_challenges.py \
+  --no-clone . \
+  --subdir challenges \
+  --url http://localhost:9042/ctfd/default \
+  --token "$CTFD_TOKEN"
+```
+
+Regenerate challenge files from `subject/Linux.md`:
+
+```sh
+python3 scripts/split_linux_subject.py
+python3 scripts/generate_flags_and_writeups.py
+cd challenges && export GPG_PASSPHRASE='…' && ./encrypt.sh
+```
 
 ## Follow-ups
 
-- Automated grading of livrables under `/mnt/host` and `answers.txt`
+- Automated grading of livrables under `/mnt/host` — see [`IDEA.md`](IDEA.md)
