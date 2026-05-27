@@ -20,7 +20,7 @@ SECTIONS: list[tuple] = [
         "shell_101/00_intro",
         "shell_101",
         "Shell 101 — Introduction",
-        10,
+        1,
         ["shell_101", "intro"],
         "# Shell 101",
         "## A : Exécution de commandes",
@@ -47,9 +47,36 @@ SECTIONS: list[tuple] = [
         "shell_101/c01_ls",
         "shell_101",
         "Shell 101 — ls",
-        20,
+        5,
         ["shell_101", "ls"],
         "## C : Commandes de base",
+        "#### ls — fichiers cachés",
+    ),
+    (
+        "shell_101/c01_ls_a",
+        "shell_101",
+        "Shell 101 — ls (fichiers cachés)",
+        5,
+        ["shell_101", "ls"],
+        "#### ls — fichiers cachés",
+        "#### ls — détails",
+    ),
+    (
+        "shell_101/c01_ls_l",
+        "shell_101",
+        "Shell 101 — ls (taille memo1.txt)",
+        5,
+        ["shell_101", "ls"],
+        "#### ls — détails",
+        "#### Exercice — répertoires",
+    ),
+    (
+        "shell_101/c01_ls_l_dirs",
+        "shell_101",
+        "Shell 101 — ls (répertoires)",
+        5,
+        ["shell_101", "ls"],
+        "#### Exercice — répertoires",
         "### 2. `whoami`",
     ),
     (
@@ -137,7 +164,7 @@ SECTIONS: list[tuple] = [
         "shell_101/e04_archivage",
         "shell_101",
         "Shell 101 — Archivage (tar)",
-        15,
+        1,
         ["shell_101", "tar"],
         "### Archivage :",
         "# Livrable 1",
@@ -395,8 +422,10 @@ def write_challenge_yml(
     )
     if requirement_names:
         lines.append("requirements:")
+        lines.append("  prerequisites:")
         for req in requirement_names:
-            lines.append(f'  - "{req}"')
+            lines.append(f'    - "{req}"')
+        lines.append("  anonymize: false")
     lines.append("tags:")
     for tag in tags:
         lines.append(f"  - {tag}")
@@ -451,10 +480,11 @@ def main() -> None:
         file_list.extend(copy_data_archives(out_dir, folder))
         file_list = sorted(set(file_list))
 
-        if folder.startswith("shell_102/"):
-            reqs = list(SHELL_101_NAMES)
-            if folder != "shell_102/00_intro" and prev_name:
-                reqs.append(prev_name)
+        if folder == "shell_102/00_intro":
+            # Unlock Shell 102 after the last Shell 101 challenge (linear chain → Livrable 1).
+            reqs = [SHELL_101_NAMES[-1]] if SHELL_101_NAMES else None
+        elif folder.startswith("shell_102/"):
+            reqs = [prev_name] if prev_name else None
         elif prev_name:
             reqs = [prev_name]
         else:

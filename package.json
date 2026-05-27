@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "pack-bundle": "npm run pack-bundle --prefix submodules/v86-runner --",
     "build-state": "npm run build-state --prefix submodules/v86-runner --",
-    "build-bundle": "npm run build-bundle --prefix submodules/v86-runner --"
+    "build-bundle": "node scripts/build-bundle.mjs",
+    "test:e2e:shell101": "node tests/e2e/run-shell101.mjs"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.10.0",

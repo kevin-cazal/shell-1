@@ -73,27 +73,15 @@ def flag(inner: str) -> str:
 
 
 def mcq_flag(letter: str) -> str:
-    return flag(letter.upper())
+    return f"shell1{{{letter.upper()}}}"
 
 
 def write_flag_files(private: Path, spec: dict[str, Any]) -> str:
-    """Write private/flag.txt and/or private/flag.yml. Returns display flag for writeup."""
-    flag_def = spec.get("flag_def")
-    if flag_def:
-        (private / "flag.yml").write_text(
-            yaml.safe_dump(flag_def, allow_unicode=True, sort_keys=False),
-            encoding="utf-8",
-        )
-        (private / "flag.txt").unlink(missing_ok=True)
-        ftype = flag_def.get("type", "static")
-        if ftype == "regex":
-            return f"regex: {flag_def.get('content', '')}"
-        if ftype == "custom":
-            return f"custom: {flag_def.get('validator', '')}"
-        return str(flag_def.get("content", ""))
+    """Write private/flag.txt (static only). Returns display flag for writeup."""
     inner = spec["flag"]
     (private / "flag.txt").write_text(inner + "\n", encoding="utf-8")
     (private / "flag.yml").unlink(missing_ok=True)
+    (private / "flag.yml.gpg").unlink(missing_ok=True)
     return inner
 
 
@@ -352,14 +340,21 @@ def build_specs(home: dict, d102: dict, delivery: dict) -> dict[str, dict]:
 3. Drapeau = commande tapée : `cal -y`.""",
         },
         "shell_101/c01_ls": {
-            "flag": flag(f"{home['visible_count']} {home['hidden_count']} {home['memo1_size']} {home['dir_count']}"),
-            "hint_extra": "Le drapeau concatène : éléments visibles, fichiers cachés (hors . et ..), taille de memo1.txt en octets, nombre de répertoires.",
+            "flag": flag(str(home["visible_count"])),
+            "writeup": f"`ls` dans le répertoire personnel → **{home['visible_count']}** entrées visibles.",
+        },
+        "shell_101/c01_ls_a": {
+            "flag": flag(str(home["hidden_count"])),
             "writeup": f"""\
-1. `ls` → {home['visible_count']} entrées visibles.
-2. `ls -a` → fichiers cachés (sans `.` et `..`) : {', '.join(home['hidden_names'])} → **{home['hidden_count']}** cachés.
-3. `ls -l memo1.txt` → taille **{home['memo1_size']}** octets.
-4. `ls -l` → **{home['dir_count']}** répertoires (code, links, memos, works).
-5. Drapeau : `shell1{{{home['visible_count']} {home['hidden_count']} {home['memo1_size']} {home['dir_count']}}}`.""",
+`ls -a` : fichiers cachés (hors `.` et `..`) : {', '.join(home['hidden_names'])} → **{home['hidden_count']}**.""",
+        },
+        "shell_101/c01_ls_l": {
+            "flag": flag(str(home["memo1_size"])),
+            "writeup": f"`ls -l memo1.txt` → taille **{home['memo1_size']}** octets.",
+        },
+        "shell_101/c01_ls_l_dirs": {
+            "flag": flag(str(home["dir_count"])),
+            "writeup": f"`ls -l` → **{home['dir_count']}** répertoires (code, links, memos, works).",
         },
         "shell_101/c02_whoami": {
             "flag": flag("user42"),
@@ -370,23 +365,26 @@ def build_specs(home: dict, d102: dict, delivery: dict) -> dict[str, dict]:
             "writeup": "Dans le répertoire personnel, `pwd` affiche `/home/user42`.",
         },
         "shell_101/c04_cd": {
-            "flag": flag(missing_from_list[0] if missing_from_list else "app"),
+            "flag": mcq_flag("A"),
+            "mcq": True,
             "writeup": f"""\
 1. `cd /tmp` puis `ls ..` (ou `ls /`).
 2. Racine de la VM de l'atelier : {', '.join(sorted(root_entries))}.
-3. Parmi app, bin, etc, home, var — absent ici : **{missing_from_list[0]}**.""",
+3. QCM : **A** — `app` n'est pas présent (etc, home, usr le sont).""",
         },
         "shell_101/c05_mkdir": {
-            "flag": flag("101"),
-            "writeup": "Après `cd` puis `mkdir 101`, le dossier de travail s'appelle **101**.",
+            "flag": flag("/home/user42/101"),
+            "writeup": "Après `mkdir 101`, `cd 101` puis `pwd` affiche `/home/user42/101`.",
         },
         "shell_101/d01_cp": {
-            "flag": flag("101 pret"),
-            "writeup": "Copiez memo1.txt, memo2.txt, memos/, .secret1.txt, .secret2.txt, links/, works/, code/ dans ~/101 puis vérifiez avec `ls -a ~/101`.",
+            "flag": flag("2565827afcf8a63b73225e43883a54b2"),
+            "hint_extra": "Exécutez `check_shell101_cp` dans la VM et soumettez le drapeau affiché.",
+            "writeup": "Copie complète dans `~/101`, puis `check_shell101_cp` → `shell1{2565827afcf8a63b73225e43883a54b2}`.",
         },
         "shell_101/d02_mv": {
-            "flag": flag("wikipedia_linux ubuntu"),
-            "writeup": "Déplacez les memos dans memos/, renommez qrcode1→wikipedia_linux et qrcode2→ubuntu dans links/, rendez les fichiers cachés visibles (mv ou mv depuis .secret*).",
+            "flag": flag("d75ecdbb8076ef9eee610e0bc71e1cd2"),
+            "hint_extra": "Exécutez `check_shell101_mv` dans la VM et soumettez le drapeau affiché.",
+            "writeup": "Après mv/renommages, `check_shell101_mv` → `shell1{d75ecdbb8076ef9eee610e0bc71e1cd2}`.",
         },
         "shell_101/e01_cat": {
             "flag": mcq_flag("B"),
@@ -397,25 +395,27 @@ def build_specs(home: dict, d102: dict, delivery: dict) -> dict[str, dict]:
 3. Drapeau : `shell1{B}`.""",
         },
         "shell_101/e02_micro": {
-            "flag": flag("convaincre un chat que je suis le chef"),
-            "writeup": "Éditez memo2.txt : supprimez le doublon, ajoutez la ligne sur le chat, enregistrez. Le drapeau est cette ligne.",
+            "flag": flag("b51eeea2920ad9f39864d129cfcacc42"),
+            "hint_extra": "Exécutez `check_shell101_micro` dans la VM et soumettez le drapeau affiché.",
+            "writeup": "Éditez `~/101/memos/memo2.txt`, puis `check_shell101_micro` → `shell1{b51eeea2920ad9f39864d129cfcacc42}`.",
         },
         "shell_101/e03_rm": {
-            "flag": flag("essay1 code"),
-            "writeup": "`rm works/essay1.txt` puis `rm -r code/` dans ~/101.",
+            "flag": flag("70d8bf6b18efd7949d10f5d61485264b"),
+            "hint_extra": "Exécutez `check_shell101_rm` dans la VM et soumettez le drapeau affiché.",
+            "writeup": "`rm works/essay1.txt` et `rm -r code/`, puis `check_shell101_rm` → `shell1{70d8bf6b18efd7949d10f5d61485264b}`.",
         },
         "shell_101/e04_archivage": {
             "flag": flag("tar ok"),
-            "writeup": "Lisez `tar -cf` et `tar -czf` ; pas de livrable unique — drapeau de validation de lecture.",
+            "hint_extra": "Drapeau de lecture : soumettez `shell1{tar ok}` (indiqué dans l'énoncé).",
+            "writeup": "Lisez `tar -cf` et `tar -czf` ; soumettez `shell1{tar ok}`.",
         },
         "shell_101/livrable_1": {
-            "flag": mcq_flag("B"),
-            "mcq": True,
+            "flag": flag("189e15d024987af4682d4b5ff4c6fa7e"),
+            "hint_extra": "Exécutez `check_shell101_livrable1` dans la VM et soumettez le drapeau affiché.",
             "writeup": """\
 1. `cd ~ && tar -cf delivery_101.tar 101`
-2. Copie cachée : `cp delivery_101.tar /mnt/host/.delivery_101.tar`
-3. QCM : **B** — `.delivery_101.tar`
-4. Drapeau : `shell1{B}`.""",
+2. `cp delivery_101.tar /mnt/host/.delivery_101.tar`
+3. `check_shell101_livrable1` → `shell1{189e15d024987af4682d4b5ff4c6fa7e}`.""",
         },
         "shell_102/00_intro": {
             "flag": flag("shell 102 start"),
