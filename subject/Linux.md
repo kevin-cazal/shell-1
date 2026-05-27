@@ -106,6 +106,18 @@ Dans une interface graphique, vous pouvez voir les fichiers et dossiers dans le 
 
 ![gui_ls](images/ls.png){width=600px}
 
+#### Exercice — éléments visibles
+
+Listez les éléments dans le répertoire courant avec `ls`. Combien d’**éléments visibles** sont présents (fichiers et dossiers, sans compter les fichiers cachés) ?
+
+<div class="hint">
+Indice: Ça ne coûte rien de consulter la page de manuel de la commande `ls` pour voir quelles options sont disponibles.
+</div>
+
+<div hidden class="solution"></div>
+
+#### ls — fichiers cachés
+
 Lister les fichiers, y compris les fichiers cachés.
 Dans les systèmes Unix et similaires, les fichiers et dossiers qui commencent par un point (`.`) sont considérés comme cachés. Pour les lister, utilisez l’option `-a` :
 
@@ -113,14 +125,13 @@ Dans les systèmes Unix et similaires, les fichiers et dossiers qui commencent p
 ls -a
 ```
 
-#### Exercice :
-Listez les éléments dans le répertoire courant. Combien d’éléments sont présents ? Combien de fichiers cachés ?
+#### Exercice — fichiers cachés
 
-<div class="hint">
-Indice: Ça ne coûte rien de consulter la page de manuel de la commande `ls` pour voir quelles options sont disponibles.
-</div>
+Combien de **fichiers cachés** sont présents (noms commençant par `.`, sans compter `.` et `..`) ?
 
 <div hidden class="solution"></div>
+
+#### ls — détails
 
 Avez-vous remarqué les répertoires `.` et `..` ?
 - `.` fait référence au répertoire courant
@@ -138,8 +149,15 @@ Pour plus de détails sur les fichiers, utilisez l’option `-l` :
 ls -l
 ```
 
-Essayez :
-Listez les fichiers du répertoire courant avec les détails. Quelle est la taille (en octets) du fichier `memo1.txt` ? Quelle est sa date de dernière modification ? Combien d’éléments listés sont des répertoires ?
+#### Exercice — taille memo1.txt
+
+Listez les fichiers du répertoire courant avec les détails (`ls -l`). Quelle est la **taille en octets** du fichier `memo1.txt` ?
+
+<div hidden class="solution"></div>
+
+#### Exercice — répertoires
+
+Toujours avec `ls -l` sur le répertoire courant : combien d’éléments listés sont des **répertoires** ?
 
 ### 2. `whoami`
 
@@ -159,7 +177,8 @@ pwd
 ```
 
 #### Exercice :
-Affichez le répertoire de travail actuel. Quel est son chemin absolu ?
+
+Revenez d’abord dans votre répertoire personnel avec `cd` (sans argument), puis affichez le répertoire de travail actuel avec `pwd`. Quel est le **chemin absolu** de votre répertoire personnel ?
 
 <div class="hint">
 Indice:
@@ -199,11 +218,18 @@ cd ..
 ```
 
 #### Exercice :
-Changez de répertoire vers `/tmp`.
-Listez le contenu du **répertoire parent** de `/tmp`. Quelle entrée n'est pas présente parmi : "app", "bin", "etc", "home", ou "var" ?
+
+Changez de répertoire vers `/tmp`, puis listez le contenu du **répertoire parent** de `/tmp` (par exemple avec `ls ..`).
+
+**Quelle entrée n’est pas présente** à la racine du système parmi les noms suivants ?
+
+- **A** — `app`
+- **B** — `etc`
+- **C** — `home`
+- **D** — `usr`
 
 <div class="hint">
-Indice: You can always use the `pwd` command to check your current working directory.
+Indice : vous pouvez toujours utiliser `pwd` pour vérifier votre répertoire de travail actuel.
 </div>
 
 <div hidden class="solution"></div>
@@ -229,9 +255,12 @@ mkdir <nouveau_dossier>
 ![gui_mkdir](images/mkdir4.png){width=600px}
 
 #### Exercice :
+
 D’abord, allez dans votre dossier personnel avec `cd`.
 Puis créez un dossier nommé `101` dans votre dossier personnel.
 Ce dossier sera votre répertoire de travail pour la suite des exercices.
+
+Quel est le **chemin absolu** du répertoire `101` ? (Indice : `cd 101` puis `pwd`.)
 
 <div hidden class="solution"></div>
 
@@ -280,6 +309,8 @@ Copiez les fichiers et dossiers suivants dans votre répertoire `101` (créé da
 
 Ensuite, allez dans le dossier `101` et vérifiez que tout a bien été copié.
 
+Lorsque tout est en place, exécutez `check_shell101_cp` et soumettez le drapeau affiché dans CTFd.
+
 ### 2 - Déplacer / Renommer : mv
 La commande mv permet de déplacer ou renommer des fichiers ou dossiers.
 ```
@@ -295,6 +326,8 @@ mv <source> <destination>
 Déplacez `memo1.txt` et `memo2.txt` dans le dossier `memos` .
 Puis, dans le dossier `links`, renommez le fichier `qrcode1` en `wikipedia_linux` et `qrcode2` en `ubuntu`.
 Enfin, rendez visibles les fichiers cachés dans `/home/user42/101/`.
+
+Lorsque tout est en place, exécutez `check_shell101_mv` et soumettez le drapeau affiché dans CTFd.
 
 <div hidden class="solution"></div>
 
@@ -357,6 +390,8 @@ Utilisez micro pour éditer `memo2.txt` dans le dossier `memos` :
 
 - Enregistrez le fichier et quittez l’éditeur.
 
+Lorsque le fichier est correct, exécutez `check_shell101_micro` et soumettez le drapeau affiché dans CTFd.
+
 <div class="hint">
 Indice:
 Il existe de nombreux éditeurs de texte sous Linux, mais micro est simple et facile à prendre en main.
@@ -391,6 +426,8 @@ rm -r <répertoire>
 - Supprimez le fichier `essay1.txt` dans le répertoire `works`. Assurez-vous de ne supprimer que le fichier `essay1.txt` et non le répertoire `works` lui-même.
 - Supprimez le répertoire `code` et tout son contenu.
 
+Lorsque tout est en place, exécutez `check_shell101_rm` et soumettez le drapeau affiché dans CTFd.
+
 <div class="hint">
 Indice: Vous pouvez toujours utiliser la commande `ls` pour vérifier le contenu d’un répertoire avant de le supprimer.
 </div>
@@ -422,6 +459,8 @@ tar -czf <nom_archive.tar.gz> <fichiers à archiver>
 ![gui_tar](images/targz2.png){width=600px}
 ![gui_tar](images/targz3.png){width=600px}
 
+Pour valider cette étape de lecture, soumettez dans CTFd : `shell1{tar ok}`.
+
 # Livrable 1
 
 Objectif : montrez que vous avez compris les commandes de base du shell et que vous pouvez manipuler des fichiers et des répertoires en autonomie.
@@ -430,14 +469,9 @@ Si vous avez un doute vous pouvez toujours vous référer aux exercices précéd
 ## Consignes :
 
 Revenez dans votre répertoire personnel et créez une archive du répertoire `101` et de tout son contenu, puis nommez-la `delivery_101.tar`.
-Pour finir créez une **copie** (l'archive originale doit donc être préservée) de cette archive dans le répertoire `/mnt/host` en faisant en sorte le fichier copié soit caché.
+Pour finir créez une **copie** (l'archive originale doit donc être préservée) de cette archive dans le répertoire `/mnt/host` sous le nom **caché** `.delivery_101.tar` (fichier commençant par un point).
 
-**Quel nom doit avoir la copie cachée dans `/mnt/host` ?**
-
-- **A** — `delivery_101.tar`
-- **B** — `.delivery_101.tar`
-- **C** — `.101.tar`
-- **D** — `host_delivery.tar`
+Lorsque l’archive est en place sur l’hôte, exécutez `check_shell101_livrable1` et soumettez le drapeau affiché dans CTFd.
 
 <div hidden class="solution"></div>
 

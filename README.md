@@ -46,10 +46,11 @@ Course text lives in [`subject/Linux.md`](subject/Linux.md) (editable in this re
 
 ```sh
 npm run prepare
-VITE_VM_MEMORY_MB=512 npm run build-bundle -- \
-  --disk submodules/vm-image/alpine-bios-512M.img \
-  -o shell-1-512M.v86b
+cd submodules/vm-image && doas ./build.sh && cd ../..
+VITE_VM_MEMORY_MB=512 npm run build-bundle
 ```
+
+Defaults: disk `submodules/vm-image/alpine-bios-512M.img`, output `shell-1-512M.v86b` at repo root. Override with `--disk` / `-o` (paths relative to repo root).
 
 Official bundle: [vm-image-discover-linux-1 releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest).
 
@@ -107,6 +108,15 @@ python3 submodules/deploy_challenges/deploy_challenges.py \
   --url http://localhost:9042/ctfd/default \
   --token "$CTFD_TOKEN"
 ```
+
+Export participant ratings/reviews and admin comments to [`TODO_comments.md`](TODO_comments.md):
+
+```sh
+export CTFD_TOKEN='…'   # same admin token as above
+python3 scripts/export_ctfd_feedback.py
+```
+
+Headless E2E (full Shell 101 path, v86 + CTFd): see [`tests/e2e/README.md`](tests/e2e/README.md) — `npm run test:e2e:shell101`.
 
 Regenerate challenge files from `subject/Linux.md`:
 
