@@ -10,13 +10,13 @@ import {
   USER42_PROMPT,
   createSerialSession,
 } from "./serial-session.mjs";
-
-const DEFAULT_COLD_BOOT_TIMEOUT_MS = Number(
-  process.env.E2E_BOOT_TIMEOUT_MS || 1_500_000,
-);
-const DEFAULT_RESUME_TIMEOUT_MS = Number(
-  process.env.E2E_RESUME_TIMEOUT_MS || 120_000,
-);
+import {
+  COLD_BOOT_MS,
+  HOST9P_ATTEMPTS,
+  HOST9P_MS,
+  RESUME_BOOT_MS,
+  USER42_SWITCH_MS,
+} from "./timeouts.mjs";
 const memoryMb = Number(process.env.VITE_VM_MEMORY_MB || 512);
 const memorySizeFromEnv = memoryMb * 1024 * 1024;
 
@@ -24,13 +24,13 @@ const memorySizeFromEnv = memoryMb * 1024 * 1024;
 export async function ensureHost9pMounted(serial) {
   const out = await serial.run(
     "mkdir -p /mnt/host; modprobe 9pnet_virtio 2>/dev/null; modprobe 9p 2>/dev/null; " +
-      "i=0; while [ $i -lt 120 ]; do /usr/local/sbin/mount-host-share 2>/dev/null && mountpoint -q /mnt/host && break; i=$((i+1)); sleep 1; done; " +
+      `i=0; while [ $i -lt ${HOST9P_ATTEMPTS} ]; do /usr/local/sbin/mount-host-share 2>/dev/null && mountpoint -q /mnt/host && break; i=$((i+1)); sleep 1; done; ` +
       "mountpoint -q /mnt/host && echo HOST_OK || echo HOST_FAIL",
-    { timeout: 180_000 },
+    { timeout: HOST9P_MS },
   );
   if (!out.includes("HOST_OK")) {
     throw new Error(
-      `host9p mount failed after 120s:\n${out.slice(-1000)}`,
+      `host9p mount failed after ${HOST9P_ATTEMPTS}s:\n${out.slice(-1000)}`,
     );
   }
 }
@@ -87,8 +87,7 @@ export async function bootVmAsUser42(opts = {}) {
   let emulator;
 
   const promptTimeoutMs =
-    opts.bootTimeoutMs ??
-    (useColdBoot ? DEFAULT_COLD_BOOT_TIMEOUT_MS : DEFAULT_RESUME_TIMEOUT_MS);
+    opts.bootTimeoutMs ?? (useColdBoot ? COLD_BOOT_MS : RESUME_BOOT_MS);
 
   emulator = new V86({
     wasm_path: wasmPath,
@@ -130,7 +129,7 @@ export async function bootVmAsUser42(opts = {}) {
 
   console.error("[e2e] Switching to user42…");
   serial.send("su - user42");
-  await serial.waitFor(USER42_PROMPT, { timeout: 60_000 });
+  await serial.waitFor(USER42_PROMPT, { timeout: USER42_SWITCH_MS });
   serial.setPrompt(USER42_PROMPT);
 
   console.error("[e2e] user42 shell ready (localhost:~$)");

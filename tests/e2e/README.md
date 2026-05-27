@@ -44,8 +44,16 @@ Serial output from the guest is streamed to stdout. Progress logs go to stderr.
 | `VM_BUNDLE` | auto-detect `shell-1-512M.v86b` |
 | `E2E_COLD_BOOT` | unset — set to `1` to boot raw `.img` instead of `.v86b` |
 | `VM_DISK` | used only when `E2E_COLD_BOOT=1` |
-| `E2E_RESUME_TIMEOUT_MS` | `120000` (wait for root after resume) |
-| `E2E_BOOT_TIMEOUT_MS` | `1500000` (cold boot only) |
+| `E2E_FROM_SLUG` | unset — start at this challenge slug (e.g. `d01_cp`) and skip earlier steps |
+| `E2E_SERIAL_TIMEOUT_MS` | `30000` (default per-command wait) |
+| `E2E_CMD_TIMEOUT_MS` | `15000` (simple scenario commands) |
+| `E2E_SLOW_CMD_TIMEOUT_MS` | `45000` (`cp -r`, `tar`, host copy) |
+| `E2E_CHECKER_TIMEOUT_MS` | `30000` (`check_shell101_*`) |
+| `E2E_RESUME_TIMEOUT_MS` | `60000` (wait for root after resume) |
+| `E2E_BOOT_TIMEOUT_MS` | `600000` (cold boot only) |
+| `E2E_HOST9P_TIMEOUT_MS` | `60000` (host9p mount script) |
+| `E2E_HOST9P_MOUNT_ATTEMPTS` | `45` (guest mount loop, 1s each) |
+| `E2E_USER42_TIMEOUT_MS` | `30000` (wait for user42 prompt) |
 | `VITE_VM_MEMORY_MB` | `512` (cold boot only; bundle carries its own RAM size) |
 
 ## Serial prompts

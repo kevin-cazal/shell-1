@@ -1,3 +1,5 @@
+import { SERIAL_MS } from "./timeouts.mjs";
+
 /** @typedef {{ send: (cmd: string) => void, waitFor: (re: RegExp, opts?: { timeout?: number }) => Promise<string>, getTail: (lines?: number) => string }} SerialSession */
 
 export const ROOT_PROMPT = /localhost:~#\s*$/;
@@ -59,7 +61,7 @@ export function createSerialSession(emulator) {
    * @param {{ timeout?: number }} [opts]
    */
   function waitFor(re, opts = {}) {
-    const timeout = opts.timeout ?? 120_000;
+    const timeout = opts.timeout ?? SERIAL_MS;
     const start = Date.now();
     return new Promise((resolve, reject) => {
       const tick = () => {
@@ -110,7 +112,7 @@ export function createSerialSession(emulator) {
      * @returns {Promise<string>} command stdout/stderr (ANSI stripped)
      */
     async run(cmd, opts = {}) {
-      const timeout = opts.timeout ?? 120_000;
+      const timeout = opts.timeout ?? SERIAL_MS;
       const tag = makeSentinelTag();
       const marker = buffer.length;
       send(`${cmd}; ${sentinelEchoCmd(tag)}`);

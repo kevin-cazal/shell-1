@@ -9,6 +9,25 @@ import {
   SHELL101_STEPS,
 } from "./scenarios/shell101.mjs";
 
+/** @returns {typeof SHELL101_STEPS} */
+function resolveSteps() {
+  const fromSlug = process.env.E2E_FROM_SLUG?.trim();
+  if (!fromSlug) {
+    return SHELL101_STEPS;
+  }
+  const idx = SHELL101_STEPS.findIndex((s) => s.slug === fromSlug);
+  if (idx < 0) {
+    throw new Error(
+      `Unknown E2E_FROM_SLUG=${fromSlug}. Valid slugs: ${SHELL101_STEPS.map((s) => s.slug).join(", ")}`,
+    );
+  }
+  const steps = SHELL101_STEPS.slice(idx);
+  console.error(
+    `[e2e] E2E_FROM_SLUG=${fromSlug} — skipping ${idx} step(s), running ${steps.length}`,
+  );
+  return steps;
+}
+
 async function main() {
   const ctfd = new CtfdClient();
   console.error("[e2e] Checking CTFd…");
@@ -29,10 +48,11 @@ async function main() {
   }
 
   const { serial, destroy } = vm;
+  const steps = resolveSteps();
   let passed = 0;
   let failed = false;
 
-  for (const step of SHELL101_STEPS) {
+  for (const step of steps) {
     const label = `${step.slug} (${step.ctfdName})`;
     process.stderr.write(`\n[e2e] ▶ ${label}\n`);
     try {
@@ -53,7 +73,7 @@ async function main() {
 
   await destroy();
 
-  console.error(`\n[e2e] ${passed}/${SHELL101_STEPS.length} challenges passed`);
+  console.error(`\n[e2e] ${passed}/${steps.length} challenges passed`);
   process.exit(failed ? 1 : 0);
 }
 

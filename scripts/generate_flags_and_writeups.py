@@ -400,9 +400,9 @@ def build_specs(home: dict, d102: dict, delivery: dict) -> dict[str, dict]:
             "writeup": "Éditez `~/101/memos/memo2.txt`, puis `check_shell101_micro` → `shell1{b51eeea2920ad9f39864d129cfcacc42}`.",
         },
         "shell_101/e03_rm": {
-            "flag": flag("d5a8519c77610b404dc97de591f56205"),
+            "flag": flag("70d8bf6b18efd7949d10f5d61485264b"),
             "hint_extra": "Exécutez `check_shell101_rm` dans la VM et soumettez le drapeau affiché.",
-            "writeup": "`rm works/essay1.txt` et `rm -r code/`, puis `check_shell101_rm` → `shell1{d5a8519c77610b404dc97de591f56205}`.",
+            "writeup": "`rm works/essay1.txt` et `rm -r code/`, puis `check_shell101_rm` → `shell1{70d8bf6b18efd7949d10f5d61485264b}`.",
         },
         "shell_101/e04_archivage": {
             "flag": flag("tar ok"),

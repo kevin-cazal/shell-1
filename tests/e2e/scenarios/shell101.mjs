@@ -7,6 +7,7 @@ import {
   extractLastLine,
   extractTrailingCount,
 } from "../lib/serial-session.mjs";
+import { CHECKER_MS, CMD_MS, SLOW_CMD_MS } from "../lib/timeouts.mjs";
 
 /** @typedef {{ serial: import("../lib/serial-session.mjs").SerialSession extends infer S ? S : never, ctfd: import("../lib/ctfd.mjs").CtfdClient }} StepContext */
 
@@ -45,7 +46,7 @@ export const SHELL101_STEPS = [
     slug: "a_execution_commandes",
     ctfdName: "Shell 101 — Exécution de commandes",
     run: async ({ serial }) => {
-      await serial.run("cal", { timeout: 30_000 });
+      await serial.run("cal", { timeout: CMD_MS });
       return flag("B");
     },
   },
@@ -53,7 +54,7 @@ export const SHELL101_STEPS = [
     slug: "b_arguments_commande",
     ctfdName: "Shell 101 — Arguments de commande",
     run: async ({ serial }) => {
-      await serial.run("cal -y", { timeout: 30_000 });
+      await serial.run("cal -y", { timeout: CMD_MS });
       return flag("cal -y");
     },
   },
@@ -160,34 +161,34 @@ export const SHELL101_STEPS = [
     slug: "d01_cp",
     ctfdName: "Shell 101 — cp",
     run: async ({ serial }) => {
-      await serial.run("cd ~", { timeout: 30_000 });
-      await serial.run("mkdir -p 101", { timeout: 30_000 });
-      await serial.run("cp memo1.txt memo2.txt 101/", { timeout: 30_000 });
-      await serial.run("cp -r memos links works code 101/", { timeout: 120_000 });
-      await serial.run("cp .secret1.txt .secret2.txt 101/", { timeout: 30_000 });
-      return serial.runAndExtractFlag("check_shell101_cp", { timeout: 60_000 });
+      await serial.run("cd ~", { timeout: CMD_MS });
+      await serial.run("mkdir -p 101", { timeout: CMD_MS });
+      await serial.run("cp memo1.txt memo2.txt 101/", { timeout: CMD_MS });
+      await serial.run("cp -r memos links works code 101/", { timeout: SLOW_CMD_MS });
+      await serial.run("cp .secret1.txt .secret2.txt 101/", { timeout: CMD_MS });
+      return serial.runAndExtractFlag("check_shell101_cp", { timeout: CHECKER_MS });
     },
   },
   {
     slug: "d02_mv",
     ctfdName: "Shell 101 — mv",
     run: async ({ serial }) => {
-      await serial.run("cd ~/101", { timeout: 30_000 });
-      await serial.run("mv memo1.txt memo2.txt memos/", { timeout: 30_000 });
+      await serial.run("cd ~/101", { timeout: CMD_MS });
+      await serial.run("mv memo1.txt memo2.txt memos/", { timeout: CMD_MS });
       await serial.run("mv links/qrcode1 links/wikipedia_linux", {
-        timeout: 30_000,
+        timeout: CMD_MS,
       });
-      await serial.run("mv links/qrcode2 links/ubuntu", { timeout: 30_000 });
-      await serial.run("mv .secret1.txt secret1.txt", { timeout: 30_000 });
-      await serial.run("mv .secret2.txt secret2.txt", { timeout: 30_000 });
-      return serial.runAndExtractFlag("check_shell101_mv", { timeout: 60_000 });
+      await serial.run("mv links/qrcode2 links/ubuntu", { timeout: CMD_MS });
+      await serial.run("mv .secret1.txt secret1.txt", { timeout: CMD_MS });
+      await serial.run("mv .secret2.txt secret2.txt", { timeout: CMD_MS });
+      return serial.runAndExtractFlag("check_shell101_mv", { timeout: CHECKER_MS });
     },
   },
   {
     slug: "e01_cat",
     ctfdName: "Shell 101 — cat",
     run: async ({ serial }) => {
-      await serial.run("cat ~/101/secret1.txt", { timeout: 30_000 });
+      await serial.run("cat ~/101/secret1.txt", { timeout: CMD_MS });
       return flag("B");
     },
   },
@@ -195,16 +196,16 @@ export const SHELL101_STEPS = [
     slug: "e02_micro",
     ctfdName: "Shell 101 — micro",
     run: async ({ serial }) => {
-      await serial.run("cd ~/101/memos", { timeout: 30_000 });
+      await serial.run("cd ~/101/memos", { timeout: CMD_MS });
       await serial.run("awk '!seen[$0]++' memo2.txt > memo2.tmp && mv memo2.tmp memo2.txt", {
-        timeout: 30_000,
+        timeout: CMD_MS,
       });
       await serial.run(
         "echo '- Convaincre un chat que je suis le chef' >> memo2.txt",
-        { timeout: 30_000 },
+        { timeout: CMD_MS },
       );
       return serial.runAndExtractFlag("check_shell101_micro", {
-        timeout: 60_000,
+        timeout: CHECKER_MS,
       });
     },
   },
@@ -212,9 +213,9 @@ export const SHELL101_STEPS = [
     slug: "e03_rm",
     ctfdName: "Shell 101 — rm et rmdir",
     run: async ({ serial }) => {
-      await serial.run("rm ~/101/works/essay1.txt", { timeout: 30_000 });
-      await serial.run("rm -r ~/101/code", { timeout: 60_000 });
-      return serial.runAndExtractFlag("check_shell101_rm", { timeout: 60_000 });
+      await serial.run("rm ~/101/works/essay1.txt", { timeout: CMD_MS });
+      await serial.run("rm -r ~/101/code", { timeout: SLOW_CMD_MS });
+      return serial.runAndExtractFlag("check_shell101_rm", { timeout: CHECKER_MS });
     },
   },
   {
@@ -227,13 +228,13 @@ export const SHELL101_STEPS = [
     ctfdName: "Shell 101 — Livrable 1",
     run: async ({ serial }) => {
       await ensureHost9pMounted(serial);
-      await serial.run("cd ~", { timeout: 30_000 });
+      await serial.run("cd ~", { timeout: CMD_MS });
       await serial.run(
         "rm -f ~/101/memos/memo2.tmp ~/101/memos/.gitkeep ~/delivery_101.tar 2>/dev/null; " +
           "test -f ~/101/secret1.txt && rm -f ~/101/.secret1.txt ~/101/.secret2.txt; true",
-        { timeout: 30_000 },
+        { timeout: CMD_MS },
       );
-      await serial.run("tar -cf delivery_101.tar 101", { timeout: 120_000 });
+      await serial.run("tar -cf delivery_101.tar 101", { timeout: SLOW_CMD_MS });
       const members = await serial.run(
         "tar -tf ~/delivery_101.tar | LC_ALL=C sort | wc -l",
       );
@@ -247,10 +248,10 @@ export const SHELL101_STEPS = [
         );
       }
       await serial.run("cp delivery_101.tar /mnt/host/.delivery_101.tar", {
-        timeout: 60_000,
+        timeout: SLOW_CMD_MS,
       });
       return serial.runAndExtractFlag("check_shell101_livrable1", {
-        timeout: 120_000,
+        timeout: SLOW_CMD_MS,
       });
     },
   },
