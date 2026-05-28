@@ -9,6 +9,16 @@ Challenge content source-of-truth lives under **`challenges/`**. Livrables go in
 - git, Node.js 20+, Linux root for disk build
 - Docker (to build guest static binaries in vm-image)
 
+## Full local deploy
+
+One-shot workshop setup (VM, bundle, Vite, CTFd, challenges):
+
+```sh
+./deploy-local.sh
+```
+
+Uses `doas` for the disk image, Docker for CTFd, and defaults from [`.cursor/rules/redeploy-challenges.mdc`](.cursor/rules/redeploy-challenges.mdc). Skip steps with env vars, e.g. `SKIP_VM=1 ./deploy-local.sh` if the disk image is already built.
+
 ## First-time setup
 
 ```sh
