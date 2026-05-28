@@ -2,7 +2,7 @@
 
 Discover Linux — Shell 101–102 atelier in the browser (Alpine guest + [v86-runner](https://github.com/kevin-cazal/v86-runner)).
 
-Split view: subject markdown on the left, terminal on the right. Livrables go in the guest at **`/mnt/host`** (virtio 9p).
+Challenge content source-of-truth lives under **`challenges/`**. Livrables go in the guest at **`/mnt/host`** (virtio 9p).
 
 ## Prerequisites
 
@@ -38,9 +38,9 @@ Open the URL shown, then pick **`shell-1-512M.v86b`** or **`alpine-bios-512M.img
 
 Guest RAM defaults to **512 MiB** (`VITE_VM_MEMORY_MB=512` in `.env`).
 
-## Subject
+## Challenges content
 
-Course text lives in [`subject/Linux.md`](subject/Linux.md) (editable in this repo). Images in [`subject/images/`](subject/images/). No PDF build step.
+Course/challenge statements live in [`challenges/`](challenges/), with one `challenge.yml` per challenge.
 
 ## V86B bundle
 
@@ -118,11 +118,9 @@ python3 scripts/export_ctfd_feedback.py
 
 Headless E2E (full Shell 101 path, v86 + CTFd): see [`tests/e2e/README.md`](tests/e2e/README.md) — `npm run test:e2e:shell101`.
 
-Regenerate challenge files from `subject/Linux.md`:
+Refresh encrypted flags after manual updates:
 
 ```sh
-python3 scripts/split_linux_subject.py
-python3 scripts/generate_flags_and_writeups.py
 cd challenges && export GPG_PASSPHRASE='…' && ./encrypt.sh
 ```
 

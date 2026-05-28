@@ -1,0 +1,30 @@
+---
+description: Redeploy CTFd challenges after any challenge tree change
+globs: challenges/**
+alwaysApply: false
+---
+
+# Redeploy challenges after changes
+
+When you add or edit anything under `challenges/`, **finish by redeploying to local CTFd** (do not skip unless deploy fails and the user must fix infra).
+
+From the repo root:
+
+```sh
+export GPG_PASSPHRASE='TESTING42'
+export CTFD_TOKEN='ctfd_0cb2ccac1f05fd0d545f187bb21bed7a7a630eb974a47e6d2c76ce69f7736afa'
+
+# Start CTFd if needed
+sg docker -c "cd submodules/ctfd && docker compose --profile shell-1 up -d ctfd-shell-1"
+
+python3 submodules/deploy_challenges/deploy_challenges.py \
+  --no-clone . \
+  --subdir challenges \
+  --url http://localhost:9042/ctfd/default \
+  --token "$CTFD_TOKEN" \
+  --force
+```
+
+If flags were regenerated as plaintext, run `cd challenges && ./encrypt.sh` first (requires `GPG_PASSPHRASE`).
+
+Report deploy success count (e.g. `34/34`) in your final message.
