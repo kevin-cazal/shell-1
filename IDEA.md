@@ -26,4 +26,4 @@ Until then, organizers rely on static flags and [private/writeup.md](challenges/
 
 - Load one challenge description at a time in the web UI (sync with CTFd progress).
 - GPG-encrypt flags for public challenge repos (`private/flag.txt.gpg`).
-- Re-run `scripts/split_linux_subject.py` after editing `subject/Linux.md`, then `scripts/generate_flags_and_writeups.py`.
+- Keep challenge statements updated directly in `challenges/*/challenge.yml`.

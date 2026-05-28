@@ -38,14 +38,6 @@ else
 	fetch "$V86_RAW/bios/vgabios.bin" "$ASSETS/vgabios.bin"
 fi
 
-SUBJECT_IMG="$ROOT/subject/images"
-SUBJECT_DEST="$PUBLIC/subject/images"
-if [ -d "$SUBJECT_IMG" ]; then
-	mkdir -p "$SUBJECT_DEST"
-	cp -rf "$SUBJECT_IMG/." "$SUBJECT_DEST/"
-	printf 'Subject images copied to %s\n' "$SUBJECT_DEST"
-fi
-
 printf 'Assets ready under %s/public\n' "$RUNNER"
 
 COI_SRC="$ROOT/public/coi-serviceworker.js"
