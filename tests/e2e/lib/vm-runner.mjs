@@ -17,7 +17,7 @@ import {
   RESUME_BOOT_MS,
   USER42_SWITCH_MS,
 } from "./timeouts.mjs";
-const memoryMb = Number(process.env.VITE_VM_MEMORY_MB || 512);
+const memoryMb = Number(process.env.VITE_VM_MEMORY_MB || 256);
 const memorySizeFromEnv = memoryMb * 1024 * 1024;
 
 /** @param {ReturnType<typeof createSerialSession>} serial */

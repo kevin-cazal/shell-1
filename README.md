@@ -17,7 +17,7 @@ One-shot workshop setup (VM, bundle, Vite, CTFd, challenges):
 ./deploy-local.sh
 ```
 
-Uses `doas` for the disk image, Docker for CTFd, and defaults from [`.cursor/rules/redeploy-challenges.mdc`](.cursor/rules/redeploy-challenges.mdc). Skip steps with env vars, e.g. `SKIP_VM=1 ./deploy-local.sh` if the disk image is already built.
+Runs the disk build as root, uses Docker for CTFd, and defaults from [`.cursor/rules/redeploy-challenges.mdc`](.cursor/rules/redeploy-challenges.mdc). Skip steps with env vars, e.g. `SKIP_VM=1 ./deploy-local.sh` if the disk image is already built.
 
 ## First-time setup
 
@@ -25,28 +25,30 @@ Uses `doas` for the disk image, Docker for CTFd, and defaults from [`.cursor/rul
 git clone --recursive https://github.com/kevin-cazal/shell-1.git
 cd shell-1
 git submodule update --init --recursive
+npm install
+cd submodules/v86-runner && npm install && cd ../..
 ```
 
-## Build disk image (default 512 MiB)
+## Build disk image (default 256 MiB)
 
 ```sh
-doas ./build.sh
+./build.sh   # as root
 ```
 
-Produces `alpine-bios-512M.img` in the repo root (via `submodules/vm-image`).
+Produces `alpine-bios-256M.img` in the repo root (via `submodules/vm-image`).
 
 ## Web UI
 
+After [first-time setup](#first-time-setup):
+
 ```sh
-npm install
-cd submodules/v86-runner && npm install && cd ../..
 npm run prepare
 npm run dev
 ```
 
-Open the URL shown, then pick **`shell-1-512M.v86b`** or **`alpine-bios-512M.img`**.
+Open the URL shown, then pick **`shell-1-256M.v86b`** or **`alpine-bios-256M.img`**.
 
-Guest RAM defaults to **512 MiB** (`VITE_VM_MEMORY_MB=512` in `.env`).
+Guest RAM defaults to **256 MiB** (`VITE_VM_MEMORY_MB=256` in `.env`).
 
 ## Challenges content
 
@@ -56,13 +58,37 @@ Course/challenge statements live in [`challenges/`](challenges/), with one `chal
 
 ```sh
 npm run prepare
-cd submodules/vm-image && doas ./build.sh && cd ../..
-VITE_VM_MEMORY_MB=512 npm run build-bundle
+cd submodules/vm-image
+./build.sh   # as root
+cd ../..
+VITE_VM_MEMORY_MB=256 npm run build-bundle
 ```
 
-Defaults: disk `submodules/vm-image/alpine-bios-512M.img`, output `shell-1-512M.v86b` at repo root. Override with `--disk` / `-o` (paths relative to repo root).
+Defaults: disk `submodules/vm-image/alpine-bios-256M.img`, output `shell-1-256M.v86b` at repo root. Override with `--disk` / `-o` (paths relative to repo root).
 
 Official bundle: [vm-image-discover-linux-1 releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest).
+
+### 512 MiB variant (optional)
+
+Larger disk and guest RAM if you need more headroom.
+
+```sh
+export IMAGE_SIZE=512M IMAGE="$PWD/alpine-bios-512M.img"
+./build.sh   # as root
+
+VITE_VM_MEMORY_MB=512 npm run build-bundle -- \
+  --disk alpine-bios-512M.img \
+  -o shell-1-512M.v86b
+```
+
+In the UI, pick **`shell-1-512M.v86b`**. When loading the raw disk instead, set `VITE_VM_MEMORY_MB=512` in `.env`.
+
+One-shot local deploy:
+
+```sh
+IMAGE_SIZE=512M DISK_IMAGE="$PWD/alpine-bios-512M.img" \
+BUNDLE_OUT="$PWD/shell-1-512M.v86b" VITE_VM_MEMORY_MB=512 ./deploy-local.sh
+```
 
 ## Host file share (`/mnt/host`)
 

@@ -17,8 +17,9 @@ export function resolveVmBundle() {
     return fromEnv;
   }
   const candidates = [
+    join(REPO_ROOT, "shell-1-256M.v86b"),
+    join(REPO_ROOT, "submodules/vm-image/shell-1-256M.v86b"),
     join(REPO_ROOT, "shell-1-512M.v86b"),
-    join(REPO_ROOT, "submodules/vm-image/shell-1-512M.v86b"),
   ];
   for (const p of candidates) {
     if (existsSync(p)) {
@@ -28,7 +29,7 @@ export function resolveVmBundle() {
   throw new Error(
     `VM bundle not found. Build with:\n` +
       `  cd submodules/vm-image && doas ./build.sh\n` +
-      `  VITE_VM_MEMORY_MB=512 npm run build-bundle\n` +
+      `  VITE_VM_MEMORY_MB=256 npm run build-bundle\n` +
       `Or set VM_BUNDLE to a .v86b path.\nTried:\n${candidates.join("\n")}`,
   );
 }
@@ -40,6 +41,8 @@ export function resolveVmDisk() {
     return fromEnv;
   }
   const candidates = [
+    join(REPO_ROOT, "submodules/vm-image/alpine-bios-256M.img"),
+    join(REPO_ROOT, "alpine-bios-256M.img"),
     join(REPO_ROOT, "submodules/vm-image/alpine-bios-512M.img"),
     join(REPO_ROOT, "alpine-bios-512M.img"),
   ];

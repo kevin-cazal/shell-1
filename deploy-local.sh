@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 # Full local workshop deploy: VM image, v86 bundle, Vite app, CTFd, challenges.
+#
+# Larger guest (512 MiB disk + RAM), e.g.:
+#   IMAGE_SIZE=512M DISK_IMAGE="$PWD/alpine-bios-512M.img" \
+#   BUNDLE_OUT="$PWD/shell-1-512M.v86b" VITE_VM_MEMORY_MB=512 ./deploy-local.sh
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "$0")" && pwd)
 cd "$ROOT"
 
-IMAGE_SIZE="${IMAGE_SIZE:-512M}"
+IMAGE_SIZE="${IMAGE_SIZE:-256M}"
 DISK_IMAGE="${DISK_IMAGE:-$ROOT/alpine-bios-${IMAGE_SIZE}.img}"
-BUNDLE_OUT="${BUNDLE_OUT:-$ROOT/shell-1-512M.v86b}"
+BUNDLE_OUT="${BUNDLE_OUT:-$ROOT/shell-1-${IMAGE_SIZE%M}M.v86b}"
 CTFD_URL="${CTFD_URL:-http://localhost:9042/ctfd/default}"
 GPG_PASSPHRASE="${GPG_PASSPHRASE:-TESTING42}"
 CTFD_TOKEN="${CTFD_TOKEN:-ctfd_0cb2ccac1f05fd0d545f187bb21bed7a7a630eb974a47e6d2c76ce69f7736afa}"
@@ -41,8 +45,19 @@ docker_cmd() {
   fi
 }
 
+run_as_root() {
+  if [ "$(id -u)" -eq 0 ]; then
+    "$@"
+  elif command -v sudo >/dev/null 2>&1; then
+    sudo "$@"
+  else
+    echo "Requires root (VM disk build). Run as root or install sudo." >&2
+    exit 1
+  fi
+}
+
 log "Checking prerequisites"
-require_cmd git node npm python3 doas
+require_cmd git node npm python3
 require_cmd docker || true
 
 if [ ! -d "$ROOT/submodules/vm-image" ]; then
@@ -59,7 +74,7 @@ fi
 if [ "$SKIP_VM" != "1" ]; then
   log "Building VM disk image ($DISK_IMAGE)"
   export IMAGE_SIZE IMAGE="$DISK_IMAGE"
-  doas "$ROOT/build.sh"
+  run_as_root env IMAGE_SIZE="$IMAGE_SIZE" IMAGE="$DISK_IMAGE" "$ROOT/build.sh"
 else
   log "Skipping VM build (SKIP_VM=1)"
   if [ ! -f "$DISK_IMAGE" ]; then
@@ -73,7 +88,7 @@ npm run prepare
 
 if [ "$SKIP_BUNDLE" != "1" ]; then
   log "Building v86 bundle ($BUNDLE_OUT)"
-  VITE_VM_MEMORY_MB="${VITE_VM_MEMORY_MB:-512}" npm run build-bundle -- --disk "$DISK_IMAGE" -o "$BUNDLE_OUT"
+  VITE_VM_MEMORY_MB="${VITE_VM_MEMORY_MB:-256}" npm run build-bundle -- --disk "$DISK_IMAGE" -o "$BUNDLE_OUT"
 else
   log "Skipping bundle build (SKIP_BUNDLE=1)"
 fi

@@ -7,7 +7,7 @@ One VM session (resume from `.v86b` by default), `su - user42` after root on ser
 ## Prerequisites
 
 - Node.js 20+
-- **V86B bundle** `shell-1-512M.v86b` (repo root or `submodules/vm-image/`) — build with [`npm run build-bundle`](../../README.md#v86b-bundle) after `doas ./build.sh` in vm-image, or download from [vm-image releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest)
+- **V86B bundle** `shell-1-256M.v86b` (repo root or `submodules/vm-image/`) — build with [`npm run build-bundle`](../../README.md#v86b-bundle) after `./build.sh` as root in vm-image, or download from [vm-image releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest)
 - CTFd running with challenges deployed
 - `npm ci` at repo root and `npm ci --prefix submodules/v86-runner`
 
@@ -41,7 +41,7 @@ Serial output from the guest is streamed to stdout. Progress logs go to stderr.
 |----------|---------|
 | `CTFD_URL` | `http://localhost:9042/ctfd/default` |
 | `CTFD_ADMIN_TOKEN` | compose `PRESET_ADMIN_TOKEN` |
-| `VM_BUNDLE` | auto-detect `shell-1-512M.v86b` |
+| `VM_BUNDLE` | auto-detect `shell-1-256M.v86b` |
 | `E2E_COLD_BOOT` | unset — set to `1` to boot raw `.img` instead of `.v86b` |
 | `VM_DISK` | used only when `E2E_COLD_BOOT=1` |
 | `E2E_FROM_SLUG` | unset — start at this challenge slug (e.g. `d01_cp`) and skip earlier steps |
@@ -54,7 +54,7 @@ Serial output from the guest is streamed to stdout. Progress logs go to stderr.
 | `E2E_HOST9P_TIMEOUT_MS` | `60000` (host9p mount script) |
 | `E2E_HOST9P_MOUNT_ATTEMPTS` | `45` (guest mount loop, 1s each) |
 | `E2E_USER42_TIMEOUT_MS` | `30000` (wait for user42 prompt) |
-| `VITE_VM_MEMORY_MB` | `512` (cold boot only; bundle carries its own RAM size) |
+| `VITE_VM_MEMORY_MB` | `256` (cold boot only; bundle carries its own RAM size) |
 
 ## Serial prompts
 

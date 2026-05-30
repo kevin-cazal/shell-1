@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Build shell-1-512M.v86b from the vm-image disk.
+ * Build shell-1-256M.v86b from the vm-image disk.
  * Resolves --disk / -o paths from the repo root (npm runs v86-runner in a subdir).
  */
 import { spawnSync } from "node:child_process";
@@ -10,8 +10,8 @@ import { fileURLToPath } from "node:url";
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const V86_RUNNER = join(REPO_ROOT, "submodules/v86-runner");
-const DEFAULT_DISK = join(REPO_ROOT, "submodules/vm-image/alpine-bios-512M.img");
-const DEFAULT_OUTPUT = join(REPO_ROOT, "shell-1-512M.v86b");
+const DEFAULT_DISK = join(REPO_ROOT, "submodules/vm-image/alpine-bios-256M.img");
+const DEFAULT_OUTPUT = join(REPO_ROOT, "shell-1-256M.v86b");
 
 /** @param {string} p */
 function resolveFromRepo(p) {
