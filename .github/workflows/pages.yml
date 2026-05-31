@@ -20,8 +20,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Resolve v86-runner submodule commit
+        id: v86_runner
+        run: echo "sha=$(git rev-parse HEAD:submodules/v86-runner)" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout v86-runner
+        uses: actions/checkout@v4
         with:
-          submodules: recursive
+          repository: kevin-cazal/v86-runner
+          path: submodules/v86-runner
+          ref: ${{ steps.v86_runner.outputs.sha }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
