@@ -39,12 +39,12 @@ function flag(inner) {
 export const SHELL101_STEPS = [
   {
     slug: "00_intro",
-    ctfdName: "Shell 101 — Introduction",
+    ctfdName: "Shell 101 — 001 — Introduction",
     run: async () => flag("pret a commencer"),
   },
   {
     slug: "a_execution_commandes",
-    ctfdName: "Shell 101 — Exécution de commandes",
+    ctfdName: "Shell 101 — 002 — Exécution de commandes",
     run: async ({ serial }) => {
       await serial.run("cal", { timeout: CMD_MS });
       return flag("B");
@@ -52,7 +52,7 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "b_arguments_commande",
-    ctfdName: "Shell 101 — Arguments de commande",
+    ctfdName: "Shell 101 — 003 — Arguments de commande",
     run: async ({ serial }) => {
       await serial.run("cal -y", { timeout: CMD_MS });
       return flag("cal -y");
@@ -60,7 +60,7 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "c01_ls",
-    ctfdName: "Shell 101 — ls",
+    ctfdName: "Shell 101 — 004 — ls",
     run: async ({ serial }) => {
       const out = await serial.run("ls -1 | wc -l");
       const n = extractTrailingCount(out);
@@ -74,7 +74,7 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "c01_ls_a",
-    ctfdName: "Shell 101 — ls (fichiers cachés)",
+    ctfdName: "Shell 101 — 005 — ls (fichiers cachés)",
     run: async ({ serial }) => {
       const out = await serial.run(
         "ls -a | grep '^\\.' | grep -v '^\\.$' | grep -v '^\\.\\.$' | wc -l",
@@ -90,7 +90,7 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "c01_ls_l",
-    ctfdName: "Shell 101 — ls (taille memo1.txt)",
+    ctfdName: "Shell 101 — 006 — ls (taille memo1.txt)",
     run: async ({ serial }) => {
       const out = await serial.run("ls -l memo1.txt | awk '{print $5}'");
       const n = extractTrailingCount(out);
@@ -104,7 +104,7 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "c01_ls_l_dirs",
-    ctfdName: "Shell 101 — ls (répertoires)",
+    ctfdName: "Shell 101 — 007 — ls (répertoires)",
     run: async ({ serial }) => {
       const out = await serial.run("ls -l | grep '^d' | wc -l");
       const n = extractTrailingCount(out);
@@ -118,7 +118,7 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "c02_whoami",
-    ctfdName: "Shell 101 — whoami",
+    ctfdName: "Shell 101 — 008 — whoami",
     run: async ({ serial }) => {
       const out = await serial.run("whoami");
       const user = extractLastLine(out);
@@ -130,7 +130,7 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "c03_pwd",
-    ctfdName: "Shell 101 — pwd",
+    ctfdName: "Shell 101 — 009 — pwd",
     run: async ({ serial }) => {
       const out = await serial.run("cd ~ && pwd");
       const path = extractLastLine(out);
@@ -142,12 +142,12 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "c04_cd",
-    ctfdName: "Shell 101 — cd",
+    ctfdName: "Shell 101 — 010 — cd",
     run: async () => flag("A"),
   },
   {
     slug: "c05_mkdir",
-    ctfdName: "Shell 101 — mkdir",
+    ctfdName: "Shell 101 — 011 — mkdir",
     run: async ({ serial }) => {
       const out = await serial.run("cd ~ && mkdir -p 101 && cd 101 && pwd");
       const path = extractLastLine(out);
@@ -159,7 +159,7 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "d01_cp",
-    ctfdName: "Shell 101 — cp",
+    ctfdName: "Shell 101 — 012 — cp",
     run: async ({ serial }) => {
       await serial.run("cd ~", { timeout: CMD_MS });
       await serial.run("mkdir -p 101", { timeout: CMD_MS });
@@ -170,8 +170,13 @@ export const SHELL101_STEPS = [
     },
   },
   {
+    slug: "d01b_compris",
+    ctfdName: "Shell 101 — 013 — Compris",
+    run: async () => flag("compris"),
+  },
+  {
     slug: "d02_mv",
-    ctfdName: "Shell 101 — mv",
+    ctfdName: "Shell 101 — 014 — mv",
     run: async ({ serial }) => {
       await serial.run("cd ~/101", { timeout: CMD_MS });
       await serial.run("mv memo1.txt memo2.txt memos/", { timeout: CMD_MS });
@@ -186,15 +191,15 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "e01_cat",
-    ctfdName: "Shell 101 — cat",
+    ctfdName: "Shell 101 — 015 — cat",
     run: async ({ serial }) => {
       await serial.run("cat ~/101/secret1.txt", { timeout: CMD_MS });
       return flag("B");
     },
   },
   {
-    slug: "e02_micro",
-    ctfdName: "Shell 101 — micro",
+    slug: "e02_nano",
+    ctfdName: "Shell 101 — 016 — nano",
     run: async ({ serial }) => {
       await serial.run("cd ~/101/memos", { timeout: CMD_MS });
       await serial.run("awk '!seen[$0]++' memo2.txt > memo2.tmp && mv memo2.tmp memo2.txt", {
@@ -204,14 +209,14 @@ export const SHELL101_STEPS = [
         "echo '- Convaincre un chat que je suis le chef' >> memo2.txt",
         { timeout: CMD_MS },
       );
-      return serial.runAndExtractFlag("check_shell101_micro", {
+      return serial.runAndExtractFlag("check_shell101_nano", {
         timeout: CHECKER_MS,
       });
     },
   },
   {
     slug: "e03_rm",
-    ctfdName: "Shell 101 — rm et rmdir",
+    ctfdName: "Shell 101 — 017 — rm et rmdir",
     run: async ({ serial }) => {
       await serial.run("rm ~/101/works/essay1.txt", { timeout: CMD_MS });
       await serial.run("rm -r ~/101/code", { timeout: SLOW_CMD_MS });
@@ -220,12 +225,12 @@ export const SHELL101_STEPS = [
   },
   {
     slug: "e04_archivage",
-    ctfdName: "Shell 101 — Archivage (tar)",
+    ctfdName: "Shell 101 — 018 — Archivage (tar)",
     run: async () => flag("tar ok"),
   },
   {
     slug: "livrable_1",
-    ctfdName: "Shell 101 — Livrable 1",
+    ctfdName: "Shell 101 — 019 — Livrable 1",
     run: async ({ serial }) => {
       await ensureHost9pMounted(serial);
       await serial.run("cd ~", { timeout: CMD_MS });
