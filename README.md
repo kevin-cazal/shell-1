@@ -104,6 +104,26 @@ After enabling **GitHub Pages** (Actions source) on `main`, the app is published
 1. Use **Download official bundle (.v86b)** on the home screen (from [vm-image releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest)).
 2. Choose the downloaded file with **Choose disk or bundle…**.
 
+## Container image (GHCR)
+
+Workshop UI only (Vite app + embedded `shell-1-256M.v86b`). **No CTFd** — use [CTFd (local scoring)](#ctfd-local-scoring) or `./deploy-local.sh` for scoring.
+
+Published on push to `main` (see [`.github/workflows/docker-ghcr.yml`](.github/workflows/docker-ghcr.yml)):
+
+**https://github.com/kevin-cazal/shell-1/pkgs/container/shell-1**
+
+```sh
+docker run --rm -p 8080:80 ghcr.io/kevin-cazal/shell-1:latest
+# http://localhost:8080 — download or open the bundled .v86b from the same host
+```
+
+Local build:
+
+```sh
+docker build -t shell-1:local .
+docker run --rm -p 8080:80 shell-1:local
+```
+
 ## Deploy (GitHub Pages)
 
 Pushes to `main` run `.github/workflows/pages.yml` (Vite build + deploy). Set repository **Pages → Build and deployment → GitHub Actions**.
