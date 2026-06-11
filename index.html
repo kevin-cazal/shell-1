@@ -3,28 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Discover Linux — Shell 101</title>
+    <title>Discover Linux / Shell CTF</title>
     <link rel="stylesheet" href="/integrations/subject.css" />
+    <link rel="stylesheet" href="/integrations/welcome.css" />
     <link rel="stylesheet" href="/src/style.css" />
-    <style>
-      .pick-steps {
-        margin: 1.25rem 0 0;
-        padding: 0;
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        align-items: center;
-      }
-      .pick-steps li {
-        margin: 0;
-        font-size: 1.05rem;
-        color: #ddd;
-      }
-      .pick-steps .pick-btn {
-        margin-top: 0;
-      }
-    </style>
   </head>
   <body class="shell-1-layout">
     <script src="coi-serviceworker.js"></script>
@@ -40,31 +22,65 @@
       hidden
     />
     <div id="pick-overlay" class="load-overlay" aria-live="polite">
-      <p class="pick-lead">Pour commencer l'atelier</p>
-      <ol class="pick-steps">
-        <li>
-          <a
-            id="official-bundle-download"
-            class="pick-download-link"
-            href="#"
-            rel="noopener noreferrer"
-            >Télécharger le fichier de l'atelier</a
-          >
-        </li>
-        <li>
-          <label class="pick-btn">
-            Ouvrir le fichier de l'atelier
-            <input
-              id="disk-input"
-              type="file"
-              accept=".v86b,.img,.raw,application/octet-stream"
-            />
-          </label>
-        </li>
-      </ol>
-      <p class="pick-hint">
-        L'atelier ne se charge pas tout seul à l'ouverture de cette page.
-      </p>
+      <div class="welcome-card">
+        <h1 class="welcome-title">Atelier Discover Linux / Shell CTF</h1>
+        <p class="welcome-intro">
+          Tu as accès à un mini Linux dans ton navigateur. Tu peux y taper des
+          commandes comme dans un vrai terminal.
+        </p>
+        <h2 class="welcome-heading">C'est parti !</h2>
+        <ol class="welcome-steps">
+          <li>
+            <span class="welcome-step-title"
+              >1. Télécharge ton environnement Linux</span
+            >
+            <div class="welcome-download-actions">
+              <a
+                id="official-bundle-download"
+                class="welcome-btn-primary"
+                href="#"
+                rel="noopener noreferrer"
+                >Télécharger (recommandé)</a
+              >
+              <a
+                id="mirror-bundle-download"
+                class="welcome-link-mirror"
+                href="#"
+                rel="noopener noreferrer"
+                >Miroir GitHub Releases</a
+              >
+            </div>
+            <p class="welcome-step-hint">
+              Fichier <code>shell-1-256M.v86b</code>, environ 330 Mo.
+            </p>
+          </li>
+          <li>
+            <span class="welcome-step-title"
+              >2. Choisis le fichier téléchargé</span
+            >
+            <label class="pick-btn">
+              Parcourir...
+              <input
+                id="disk-input"
+                type="file"
+                accept=".v86b,.img,.raw,application/octet-stream"
+              />
+            </label>
+            <p id="pick-file-name" class="pick-file-name" hidden></p>
+          </li>
+          <li>
+            <span class="welcome-step-title">3. Lance ton environnement</span>
+            <button
+              type="button"
+              id="pick-launch-btn"
+              class="pick-launch-btn"
+              disabled
+            >
+              Lancer l'environnement Linux
+            </button>
+          </li>
+        </ol>
+      </div>
       <p id="pick-error" class="pick-error" hidden></p>
     </div>
     <div id="load-overlay" class="load-overlay" hidden aria-live="polite">

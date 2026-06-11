@@ -1,10 +1,10 @@
 /** Discover Linux (shell-1) product entry: subject pane, then generic v86 runner. */
-import { initOfficialBundleDownloadLink } from "./plugins/bundleRelease.js";
+import { initBundleDownloadLinks } from "./plugins/bundleRelease.js";
 import { initScrollFocus } from "./plugins/scrollFocus.js";
 import "@runner/app.js";
 
 initScrollFocus();
-initOfficialBundleDownloadLink();
+initBundleDownloadLinks();
 initFrenchAtelierPickStatus();
 
 function initFrenchAtelierPickStatus() {

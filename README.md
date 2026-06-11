@@ -101,12 +101,12 @@ After enabling **GitHub Pages** (Actions source) on `main`, the app is published
 
 **https://kevin-cazal.github.io/shell-1/**
 
-1. Use **Télécharger le fichier de l'atelier** on the home screen (default: [cdn.cazal.eu/shell-1-256M.v86b](https://cdn.cazal.eu/shell-1-256M.v86b)).
-2. Choose the downloaded file with **Choose disk or bundle…**.
+1. **Télécharge** ton environnement Linux (CDN recommandé, [miroir GitHub Releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest/download/shell-1-256M.v86b) en secours).
+2. **Choisis** le fichier `.v86b` téléchargé, puis **lance** l'environnement depuis l'écran d'accueil.
 
 ## Container image (GHCR)
 
-Workshop UI only (Vite app; bundle download links to [cdn.cazal.eu/shell-1-256M.v86b](https://cdn.cazal.eu/shell-1-256M.v86b)). **No CTFd** — use [CTFd (local scoring)](#ctfd-local-scoring) or `./deploy-local.sh` for scoring.
+Workshop UI only (Vite app; home screen links to [cdn.cazal.eu/shell-1-256M.v86b](https://cdn.cazal.eu/shell-1-256M.v86b) and a GitHub mirror). **No CTFd** — use [CTFd (local scoring)](#ctfd-local-scoring) or `./deploy-local.sh` for scoring.
 
 Published on push to `main` (see [`.github/workflows/docker-ghcr.yml`](.github/workflows/docker-ghcr.yml)):
 
