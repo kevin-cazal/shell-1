@@ -66,7 +66,7 @@ VITE_VM_MEMORY_MB=256 npm run build-bundle
 
 Defaults: disk `submodules/vm-image/alpine-bios-256M.img`, output `shell-1-256M.v86b` at repo root. Override with `--disk` / `-o` (paths relative to repo root).
 
-Official bundle: [vm-image-discover-linux-1 releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest).
+Official bundle: [cdn.cazal.eu/shell-1-256M.v86b](https://cdn.cazal.eu/shell-1-256M.v86b).
 
 ### 512 MiB variant (optional)
 
@@ -101,7 +101,7 @@ After enabling **GitHub Pages** (Actions source) on `main`, the app is published
 
 **https://kevin-cazal.github.io/shell-1/**
 
-1. Use **Download official bundle (.v86b)** on the home screen (from [vm-image releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest)).
+1. Use **Télécharger le fichier de l'atelier** on the home screen (default: [cdn.cazal.eu/shell-1-256M.v86b](https://cdn.cazal.eu/shell-1-256M.v86b)).
 2. Choose the downloaded file with **Choose disk or bundle…**.
 
 ## Container image (GHCR)

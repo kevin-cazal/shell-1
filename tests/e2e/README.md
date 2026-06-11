@@ -7,7 +7,7 @@ One VM session (resume from `.v86b` by default), `su - user42` after root on ser
 ## Prerequisites
 
 - Node.js 20+
-- **V86B bundle** `shell-1-256M.v86b` (repo root or `submodules/vm-image/`) — build with [`npm run build-bundle`](../../README.md#v86b-bundle) after `./build.sh` as root in vm-image, or download from [vm-image releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest)
+- **V86B bundle** `shell-1-256M.v86b` (repo root or `submodules/vm-image/`) — build with [`npm run build-bundle`](../../README.md#v86b-bundle) after `./build.sh` as root in vm-image, or download from [cdn.cazal.eu](https://cdn.cazal.eu/shell-1-256M.v86b)
 - CTFd running with challenges deployed
 - `npm ci` at repo root and `npm ci --prefix submodules/v86-runner`
 
