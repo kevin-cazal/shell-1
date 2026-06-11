@@ -3,6 +3,8 @@
 
 FROM node:20-alpine AS build
 
+RUN apk add --no-cache curl
+
 WORKDIR /app
 
 # Build context must include initialized submodules (CI: actions/checkout submodules: recursive).
