@@ -106,7 +106,7 @@ After enabling **GitHub Pages** (Actions source) on `main`, the app is published
 
 ## Container image (GHCR)
 
-Workshop UI only (Vite app + embedded `shell-1-256M.v86b`). **No CTFd** — use [CTFd (local scoring)](#ctfd-local-scoring) or `./deploy-local.sh` for scoring.
+Workshop UI only (Vite app; bundle download links to [cdn.cazal.eu/shell-1-256M.v86b](https://cdn.cazal.eu/shell-1-256M.v86b)). **No CTFd** — use [CTFd (local scoring)](#ctfd-local-scoring) or `./deploy-local.sh` for scoring.
 
 Published on push to `main` (see [`.github/workflows/docker-ghcr.yml`](.github/workflows/docker-ghcr.yml)):
 
@@ -114,7 +114,7 @@ Published on push to `main` (see [`.github/workflows/docker-ghcr.yml`](.github/w
 
 ```sh
 docker run --rm -p 8080:80 ghcr.io/kevin-cazal/shell-1:latest
-# http://localhost:8080 — download or open the bundled .v86b from the same host
+# http://localhost:8080 — download the .v86b from the CDN link on the home screen
 ```
 
 Local build:

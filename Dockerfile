@@ -1,9 +1,7 @@
 # syntax=docker/dockerfile:1
-# Static Shell 101–102 site (Vite dist) + official .v86b bundle, served by nginx.
+# Static Shell 101–102 site (Vite dist), served by nginx.
 
 FROM node:20-alpine AS build
-
-RUN apk add --no-cache curl
 
 WORKDIR /app
 
@@ -18,18 +16,14 @@ RUN npm ci \
  && cp -f public/coi-serviceworker.js submodules/v86-runner/public/
 
 ARG VITE_BASE=/
-ARG VITE_OFFICIAL_BUNDLE_URL=/shell-1-256M.v86b
+ARG VITE_OFFICIAL_BUNDLE_URL=https://cdn.cazal.eu/shell-1-256M.v86b
 ARG VITE_VM_MEMORY_MB=256
-ARG BUNDLE_URL=https://cdn.cazal.eu/shell-1-256M.v86b
-ARG BUNDLE_FILENAME=shell-1-256M.v86b
 
 ENV VITE_BASE=${VITE_BASE} \
     VITE_OFFICIAL_BUNDLE_URL=${VITE_OFFICIAL_BUNDLE_URL} \
     VITE_VM_MEMORY_MB=${VITE_VM_MEMORY_MB}
 
 RUN npm run prepare && npm run build
-
-RUN curl -fsSL -o "dist/${BUNDLE_FILENAME}" "${BUNDLE_URL}"
 
 FROM nginx:1.27-alpine AS runtime
 
