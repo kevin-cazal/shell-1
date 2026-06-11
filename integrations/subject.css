@@ -8,6 +8,10 @@
   flex-shrink: 0;
 }
 
+.workbench:has(.terminal-wrap[hidden]) {
+  display: none;
+}
+
 .workbench {
   flex: 1;
   display: grid;
