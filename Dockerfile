@@ -20,7 +20,7 @@ RUN npm ci \
 ARG VITE_BASE=/
 ARG VITE_OFFICIAL_BUNDLE_URL=/shell-1-256M.v86b
 ARG VITE_VM_MEMORY_MB=256
-ARG BUNDLE_URL=https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest/download/shell-1-256M.v86b
+ARG BUNDLE_URL=https://cdn.cazal.eu/shell-1-256M.v86b
 ARG BUNDLE_FILENAME=shell-1-256M.v86b
 
 ENV VITE_BASE=${VITE_BASE} \
