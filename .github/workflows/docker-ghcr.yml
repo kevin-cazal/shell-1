@@ -64,5 +64,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VITE_OFFICIAL_BUNDLE_URL=https://cdn.cazal.eu/shell-1-256M.v86b
+            VITE_MIRROR_BUNDLE_URLS=https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest/download/shell-1-256M.v86b,https://gitlab.com/api/v4/projects/83317930/packages/generic/vm-artifacts/latest/shell-1-256M.v86b,https://lab.epitech.academy/dl/shell-1-256M.v86b
+            VITE_VM_MEMORY_MB=256
           cache-from: type=gha
           cache-to: type=gha,mode=max

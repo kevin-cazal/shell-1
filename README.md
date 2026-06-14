@@ -101,12 +101,12 @@ After enabling **GitHub Pages** (Actions source) on `main`, the app is published
 
 **https://kevin-cazal.github.io/shell-1/**
 
-1. **Télécharge** ton environnement Linux (CDN recommandé, [miroir GitHub Releases](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest/download/shell-1-256M.v86b) en secours).
+1. **Télécharge** ton environnement Linux (CDN recommandé ; miroirs en secours : [GitHub](https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest/download/shell-1-256M.v86b), [GitLab](https://gitlab.com/api/v4/projects/83317930/packages/generic/vm-artifacts/latest/shell-1-256M.v86b), [VPS](https://lab.epitech.academy/dl/shell-1-256M.v86b)).
 2. **Choisis** le fichier `.v86b` téléchargé, puis **lance** l'environnement depuis l'écran d'accueil.
 
 ## Container image (GHCR)
 
-Workshop UI only (Vite app; home screen links to [cdn.cazal.eu/shell-1-256M.v86b](https://cdn.cazal.eu/shell-1-256M.v86b) and a GitHub mirror). **No CTFd** — use [CTFd (local scoring)](#ctfd-local-scoring) or `./deploy-local.sh` for scoring.
+Workshop UI only (Vite app; home screen links to [cdn.cazal.eu/shell-1-256M.v86b](https://cdn.cazal.eu/shell-1-256M.v86b) and three secondary mirrors: GitHub, GitLab, VPS). **No CTFd** — use [CTFd (local scoring)](#ctfd-local-scoring) or `./deploy-local.sh` for scoring.
 
 Published on push to `main` (see [`.github/workflows/docker-ghcr.yml`](.github/workflows/docker-ghcr.yml)):
 

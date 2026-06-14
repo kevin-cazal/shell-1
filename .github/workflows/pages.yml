@@ -52,7 +52,7 @@ jobs:
         env:
           VITE_BASE: /${{ github.event.repository.name }}/
           VITE_OFFICIAL_BUNDLE_URL: https://cdn.cazal.eu/shell-1-256M.v86b
-          VITE_MIRROR_BUNDLE_URL: https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest/download/shell-1-256M.v86b
+          VITE_MIRROR_BUNDLE_URLS: https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest/download/shell-1-256M.v86b,https://gitlab.com/api/v4/projects/83317930/packages/generic/vm-artifacts/latest/shell-1-256M.v86b,https://lab.epitech.academy/dl/shell-1-256M.v86b
           VITE_VM_MEMORY_MB: "256"
         run: npm run build
 

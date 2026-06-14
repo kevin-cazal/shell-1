@@ -19,12 +19,12 @@ RUN npm ci \
 
 ARG VITE_BASE=/
 ARG VITE_OFFICIAL_BUNDLE_URL=https://cdn.cazal.eu/shell-1-256M.v86b
-ARG VITE_MIRROR_BUNDLE_URL=https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest/download/shell-1-256M.v86b
+ARG VITE_MIRROR_BUNDLE_URLS=https://github.com/kevin-cazal/vm-image-discover-linux-1/releases/latest/download/shell-1-256M.v86b,https://gitlab.com/api/v4/projects/83317930/packages/generic/vm-artifacts/latest/shell-1-256M.v86b,https://lab.epitech.academy/dl/shell-1-256M.v86b
 ARG VITE_VM_MEMORY_MB=256
 
 ENV VITE_BASE=${VITE_BASE} \
     VITE_OFFICIAL_BUNDLE_URL=${VITE_OFFICIAL_BUNDLE_URL} \
-    VITE_MIRROR_BUNDLE_URL=${VITE_MIRROR_BUNDLE_URL} \
+    VITE_MIRROR_BUNDLE_URLS=${VITE_MIRROR_BUNDLE_URLS} \
     VITE_VM_MEMORY_MB=${VITE_VM_MEMORY_MB}
 
 RUN npm run prepare && npm run build
